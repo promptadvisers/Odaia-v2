@@ -5,7 +5,7 @@
 @tailwind utilities;
 
 /* Global dark theme styles with exact color values */
-:root {
+:root[data-theme="dark"], :root {
   /* Background colors */
   --bg-main: #0a0c10;        /* Darkest - main app background */
   --bg-secondary: #1a1a1a;    /* Assistant panel (slightly lighter) */
@@ -29,6 +29,34 @@
   --accent-blue: #3b82f6;     /* Primary blue */
   --accent-teal: #14b8a6;     /* Success/Ready state */
   --accent-yellow: #f59e0b;   /* Warning/Missing info state (more orange) */
+  --accent-green: #10b981;    /* Green state */
+}
+
+/* Light theme */
+:root[data-theme="light"] {
+  /* Background colors */
+  --bg-main: #ffffff;         /* White background */
+  --bg-secondary: #f9fafb;    /* Light gray assistant panel */
+  --bg-card: #ffffff;         /* White cards */
+  --bg-modal: #ffffff;        /* White modals */
+  --bg-hover: #f3f4f6;        /* Light gray hover */
+  --bg-input: #f9fafb;        /* Light input background */
+  --bg-header: #ffffff;       /* White header */
+  
+  /* Text colors */
+  --text-primary: #111827;    /* Dark text */
+  --text-secondary: #6b7280;  /* Gray text */
+  --text-muted: #9ca3af;      /* Light gray text */
+  
+  /* Border colors */
+  --border-primary: #e5e7eb;  /* Light borders */
+  --border-subtle: #f3f4f6;   /* Very light borders */
+  --border-secondary: #e5e7eb; /* Secondary borders */
+  
+  /* Accent colors (same in both themes) */
+  --accent-blue: #3b82f6;     /* Primary blue */
+  --accent-teal: #14b8a6;     /* Success/Ready state */
+  --accent-yellow: #f59e0b;   /* Warning/Missing info state */
   --accent-green: #10b981;    /* Green state */
 }
 
