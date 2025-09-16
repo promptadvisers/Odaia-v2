@@ -5,23 +5,50 @@ import { useAppStore } from '../store/appStore';
 interface EditBrandDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  itemKey: keyof typeof useAppStore.prototype.brandConfig | null;
+  itemKey: keyof BrandConfig | null;
 }
+
+type BrandConfig = {
+  brand: {
+    status: 'Ready' | 'Missing info' | 'Pending';
+    tags: string[];
+    description: string;
+    approved: boolean;
+  };
+  brandAccess: {
+    status: 'Ready' | 'Missing info' | 'Pending';
+    pspProgram: string;
+    finicalSupport: string;
+    webPortal: string;
+    marketAccess: string;
+    approved: boolean;
+  };
+  salesGoals: {
+    status: 'Ready' | 'Missing info' | 'Pending';
+    approved: boolean;
+  };
+  competitiveLandscape: {
+    status: 'Ready' | 'Missing info' | 'Pending';
+    tags?: string[];
+    description?: string;
+    approved: boolean;
+  };
+};
 
 export const EditBrandDialog: React.FC<EditBrandDialogProps> = ({ isOpen, onClose, itemKey }) => {
   const { brandConfig, updateBrandItem } = useAppStore();
   const [formData, setFormData] = useState<any>({});
 
   useEffect(() => {
-    if (itemKey && brandConfig[itemKey]) {
-      setFormData({ ...brandConfig[itemKey] });
+    if (itemKey && brandConfig && itemKey in brandConfig) {
+      setFormData({ ...(brandConfig as any)[itemKey] });
     }
   }, [itemKey, brandConfig, isOpen]);
 
   if (!isOpen || !itemKey) return null;
 
   const handleSave = () => {
-    updateBrandItem(itemKey, formData);
+    updateBrandItem(itemKey as keyof BrandConfig, formData);
     onClose();
   };
 

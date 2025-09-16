@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import * as RadixDialog from '@radix-ui/react-dialog';
-import { Input } from '../components/Input';
 import { Button } from '../components/Button';
 import { ChevronLeft, Check, X } from 'lucide-react';
 

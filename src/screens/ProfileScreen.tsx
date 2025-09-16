@@ -1,5 +1,5 @@
 import React from 'react';
-import { User, Mail, Phone, Briefcase, MapPin, Calendar, Award } from 'lucide-react';
+import { Mail, Phone, Briefcase, MapPin, Calendar, Award } from 'lucide-react';
 
 export const ProfileScreen: React.FC = () => {
   const userProfile = {

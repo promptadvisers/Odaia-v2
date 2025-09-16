@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Calendar, Target, Users, Activity } from 'lucide-react';
+import { X, Calendar, Users, Activity } from 'lucide-react';
 
 interface CallPlanDialogProps {
   isOpen: boolean;

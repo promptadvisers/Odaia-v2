@@ -1,5 +1,5 @@
 import React from 'react';
-import { Moon, Sun, Bell, Lock, Globe, Database, Zap } from 'lucide-react';
+import { Moon, Sun, Bell, Lock, Database } from 'lucide-react';
 import { useAppStore } from '../store/appStore';
 
 export const SettingsScreen: React.FC = () => {

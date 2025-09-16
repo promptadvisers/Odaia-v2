@@ -1,7 +1,7 @@
 import React from 'react';
 import { FileText, Download, Trash2, Eye, Clock } from 'lucide-react';
 import { useAppStore } from '../store/appStore';
-import { FileUpload, FileList } from '../components/FileUpload';
+import { FileUpload } from '../components/FileUpload';
 
 export const DocumentsScreen: React.FC = () => {
   const { uploadedFiles, removeFile } = useAppStore();

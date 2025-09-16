@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
@@ -27,7 +27,7 @@ function App() {
     setActiveSidebarItem, 
     activeModal, 
     setActiveModal,
-    theme 
+    theme: _theme 
   } = useAppStore();
 
   // Initialize theme on mount

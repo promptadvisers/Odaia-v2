@@ -1,5 +1,5 @@
 import React from 'react';
-import { Users, Mail, Phone, Shield } from 'lucide-react';
+import { Mail, Phone } from 'lucide-react';
 
 interface TeamMember {
   id: string;
