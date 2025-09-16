@@ -10,6 +10,7 @@ export const HCPTargetingDialog: React.FC<HCPTargetingDialogProps> = ({ isOpen, 
   const [useEstablished, setUseEstablished] = useState(true);
   const [currentValue, setCurrentValue] = useState(70);
   const [potential, setPotential] = useState(30);
+  const [showAdvancedEdit, setShowAdvancedEdit] = useState(false);
   
   const competitiveStrategies = [
     { id: 1, label: '20% importance on 2L Therapy HER+ Overall Market, XPO TRx', checked: true },
@@ -191,9 +192,109 @@ export const HCPTargetingDialog: React.FC<HCPTargetingDialogProps> = ({ isOpen, 
             </label>
           </div>
 
+          {/* Advanced Edit Section */}
+          {showAdvancedEdit && (
+            <div style={{ 
+              marginBottom: '24px',
+              padding: '20px',
+              backgroundColor: 'var(--bg-input)',
+              borderRadius: '8px',
+              border: '1px solid var(--border-subtle)'
+            }}>
+              <h4 style={{
+                fontSize: '14px',
+                fontWeight: '500',
+                color: 'var(--text-primary)',
+                marginBottom: '16px'
+              }}>
+                Advanced Configuration
+              </h4>
+              
+              <div style={{ marginBottom: '20px' }}>
+                <label style={{
+                  display: 'block',
+                  fontSize: '12px',
+                  color: 'var(--text-secondary)',
+                  marginBottom: '8px'
+                }}>
+                  Current Value Weight: {currentValue}%
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={currentValue}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value);
+                    setCurrentValue(val);
+                    setPotential(100 - val);
+                  }}
+                  style={{
+                    width: '100%',
+                    height: '6px',
+                    borderRadius: '3px',
+                    backgroundColor: 'var(--border-primary)',
+                    outline: 'none',
+                    WebkitAppearance: 'none'
+                  }}
+                />
+              </div>
+              
+              <div style={{ marginBottom: '20px' }}>
+                <label style={{
+                  display: 'block',
+                  fontSize: '12px',
+                  color: 'var(--text-secondary)',
+                  marginBottom: '8px'
+                }}>
+                  Potential Weight: {potential}%
+                </label>
+                <input
+                  type="range"
+                  min="0"
+                  max="100"
+                  value={potential}
+                  onChange={(e) => {
+                    const val = parseInt(e.target.value);
+                    setPotential(val);
+                    setCurrentValue(100 - val);
+                  }}
+                  style={{
+                    width: '100%',
+                    height: '6px',
+                    borderRadius: '3px',
+                    backgroundColor: 'var(--border-primary)',
+                    outline: 'none',
+                    WebkitAppearance: 'none'
+                  }}
+                />
+              </div>
+              
+              <div style={{ 
+                padding: '12px',
+                backgroundColor: 'var(--bg-card)',
+                borderRadius: '6px',
+                border: '1px solid var(--border-subtle)'
+              }}>
+                <p style={{
+                  fontSize: '12px',
+                  color: 'var(--text-secondary)',
+                  margin: 0
+                }}>
+                  Total Weight: {currentValue + potential}%
+                  {(currentValue + potential) !== 100 && (
+                    <span style={{ color: 'var(--accent-yellow)', marginLeft: '8px' }}>
+                      (Should equal 100%)
+                    </span>
+                  )}
+                </p>
+              </div>
+            </div>
+          )}
+
           {/* Three Column Layout */}
           <div style={{ 
-            display: 'grid', 
+            display: showAdvancedEdit ? 'none' : 'grid', 
             gridTemplateColumns: '1fr 1fr 1fr',
             gap: '24px',
             marginBottom: '32px'
@@ -343,10 +444,11 @@ export const HCPTargetingDialog: React.FC<HCPTargetingDialogProps> = ({ isOpen, 
               Done
             </button>
             <button
+              onClick={() => setShowAdvancedEdit(!showAdvancedEdit)}
               style={{
                 padding: '10px 20px',
-                backgroundColor: 'transparent',
-                color: 'var(--text-secondary)',
+                backgroundColor: showAdvancedEdit ? 'var(--accent-blue)' : 'transparent',
+                color: showAdvancedEdit ? 'white' : 'var(--text-secondary)',
                 border: '1px solid var(--border-subtle)',
                 borderRadius: '6px',
                 fontSize: '13px',
@@ -354,7 +456,7 @@ export const HCPTargetingDialog: React.FC<HCPTargetingDialogProps> = ({ isOpen, 
                 cursor: 'pointer'
               }}
             >
-              Advanced Edit
+              {showAdvancedEdit ? 'Basic View' : 'Advanced Edit'}
             </button>
             <button
               onClick={onClose}

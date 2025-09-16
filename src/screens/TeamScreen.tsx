@@ -56,29 +56,39 @@ const teamMembers: TeamMember[] = [
 
 export const TeamScreen: React.FC = () => {
   return (
-    <div style={{ padding: '24px' }}>
-      <div style={{ marginBottom: '24px' }}>
-        <h2 style={{ 
-          fontSize: '20px',
-          fontWeight: '600',
-          color: 'var(--text-primary)',
-          marginBottom: '8px'
-        }}>
-          Team Members
-        </h2>
-        <p style={{ 
-          fontSize: '13px',
-          color: 'var(--text-secondary)'
-        }}>
-          Manage and collaborate with your team members
-        </p>
-      </div>
-
+    <div style={{ 
+      flex: 1,
+      backgroundColor: 'var(--bg-main)',
+      display: 'flex',
+      justifyContent: 'center'
+    }}>
       <div style={{ 
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))',
-        gap: '16px'
+        width: '100%',
+        maxWidth: '1400px',
+        padding: '24px'
       }}>
+        <div style={{ marginBottom: '24px' }}>
+          <h2 style={{ 
+            fontSize: '20px',
+            fontWeight: '600',
+            color: 'var(--text-primary)',
+            marginBottom: '8px'
+          }}>
+            Team Members
+          </h2>
+          <p style={{ 
+            fontSize: '13px',
+            color: 'var(--text-secondary)'
+          }}>
+            Manage and collaborate with your team members
+          </p>
+        </div>
+
+        <div style={{ 
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fill, minmax(380px, 1fr))',
+          gap: '20px'
+        }}>
         {teamMembers.map((member) => (
           <div key={member.id} style={{
             backgroundColor: 'var(--bg-card)',
@@ -186,6 +196,7 @@ export const TeamScreen: React.FC = () => {
             </div>
           </div>
         ))}
+        </div>
       </div>
     </div>
   );

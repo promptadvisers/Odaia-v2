@@ -28,6 +28,8 @@ interface BrandConfig {
   };
   competitiveLandscape: {
     status: 'Ready' | 'Missing info' | 'Pending';
+    tags?: string[];
+    description?: string;
     approved: boolean;
   };
 }
@@ -37,11 +39,15 @@ interface AppState {
   uploadedFiles: UploadedFile[];
   addFile: (file: File) => void;
   removeFile: (id: string) => void;
+  isProcessingFile: boolean;
+  setIsProcessingFile: (processing: boolean) => void;
+  hasUploadedFiles: boolean;
   
   // Brand configuration
   brandConfig: BrandConfig;
   updateBrandAccess: (data: Partial<BrandConfig['brandAccess']>) => void;
   approveBrandItem: (item: keyof BrandConfig) => void;
+  updateBrandItem: (item: keyof BrandConfig, data: any) => void;
   
   // UI State
   activeModal: string | null;
@@ -58,18 +64,33 @@ interface AppState {
 
 export const useAppStore = create<AppState>((set) => ({
   // File management
-  uploadedFiles: [],
-  addFile: (file) => set((state) => ({
-    uploadedFiles: [...state.uploadedFiles, {
+  uploadedFiles: JSON.parse(localStorage.getItem('uploadedFiles') || '[]'),
+  isProcessingFile: false,
+  hasUploadedFiles: JSON.parse(localStorage.getItem('uploadedFiles') || '[]').length > 0,
+  setIsProcessingFile: (processing) => set({ isProcessingFile: processing }),
+  addFile: (file) => set((state) => {
+    const newFile = {
       id: Math.random().toString(36).substr(2, 9),
       name: file.name,
       size: `${(file.size / 1024 / 1024).toFixed(1)} MB`,
       uploadedAt: new Date()
-    }]
-  })),
-  removeFile: (id) => set((state) => ({
-    uploadedFiles: state.uploadedFiles.filter(f => f.id !== id)
-  })),
+    };
+    const updatedFiles = [...state.uploadedFiles, newFile];
+    localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles));
+    
+    // Start processing simulation
+    set({ isProcessingFile: true, hasUploadedFiles: true });
+    setTimeout(() => {
+      set({ isProcessingFile: false });
+    }, 3000); // Simulate 3 seconds of processing
+    
+    return { uploadedFiles: updatedFiles };
+  }),
+  removeFile: (id) => set((state) => {
+    const updatedFiles = state.uploadedFiles.filter(f => f.id !== id);
+    localStorage.setItem('uploadedFiles', JSON.stringify(updatedFiles));
+    return { uploadedFiles: updatedFiles, hasUploadedFiles: updatedFiles.length > 0 };
+  }),
   
   // Brand configuration
   brandConfig: {
@@ -93,6 +114,8 @@ export const useAppStore = create<AppState>((set) => ({
     },
     competitiveLandscape: {
       status: 'Ready',
+      tags: ['T-DM1', 'T-DXd', 'Sacituzumab'],
+      description: 'The HER2+ metastatic breast cancer landscape includes key competitors like T-DM1 (established market leader), T-DXd (emerging threat with strong efficacy data), and Sacituzumab (growing adoption in triple-negative subset). Differentiation through safety profile and access programs is critical.',
       approved: false
     }
   },
@@ -115,6 +138,15 @@ export const useAppStore = create<AppState>((set) => ({
       }
     }
   })),
+  updateBrandItem: (item, data) => set((state) => ({
+    brandConfig: {
+      ...state.brandConfig,
+      [item]: {
+        ...state.brandConfig[item],
+        ...data
+      }
+    }
+  })),
   
   // UI State
   activeModal: null,
@@ -130,6 +162,6 @@ export const useAppStore = create<AppState>((set) => ({
   }),
   
   // Sidebar
-  activeSidebarItem: 'documents',
+  activeSidebarItem: '',
   setActiveSidebarItem: (item) => set({ activeSidebarItem: item })
 }));

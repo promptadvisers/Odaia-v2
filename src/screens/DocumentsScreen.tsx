@@ -4,11 +4,21 @@ import { useAppStore } from '../store/appStore';
 import { FileUpload, FileList } from '../components/FileUpload';
 
 export const DocumentsScreen: React.FC = () => {
-  const { uploadedFiles } = useAppStore();
+  const { uploadedFiles, removeFile } = useAppStore();
 
   return (
-    <div style={{ padding: '24px' }}>
-      <div style={{ marginBottom: '24px' }}>
+    <div style={{ 
+      flex: 1,
+      backgroundColor: 'var(--bg-main)',
+      display: 'flex',
+      justifyContent: 'center'
+    }}>
+      <div style={{ 
+        width: '100%',
+        maxWidth: '1200px',
+        padding: '24px'
+      }}>
+        <div style={{ marginBottom: '24px' }}>
         <h2 style={{ 
           fontSize: '20px',
           fontWeight: '600',
@@ -124,7 +134,9 @@ export const DocumentsScreen: React.FC = () => {
                   }}>
                     <Download style={{ width: '16px', height: '16px', color: 'var(--text-muted)' }} />
                   </button>
-                  <button style={{
+                  <button 
+                    onClick={() => removeFile(file.id)}
+                    style={{
                     padding: '6px',
                     backgroundColor: 'transparent',
                     border: 'none',
@@ -142,6 +154,7 @@ export const DocumentsScreen: React.FC = () => {
           </div>
         </div>
       )}
+      </div>
     </div>
   );
 };

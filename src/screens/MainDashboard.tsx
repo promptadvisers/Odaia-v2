@@ -9,10 +9,11 @@ import { useAppStore } from '../store/appStore';
 interface MainDashboardProps {
   onNavigate?: (screen: string) => void;
   activeTab?: string;
+  onEdit?: (item: string) => void;
 }
 
-export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, activeTab = 'brand' }) => {
-  const { uploadedFiles, brandConfig, setActiveModal } = useAppStore();
+export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, activeTab = 'brand', onEdit }) => {
+  const { uploadedFiles, brandConfig, setActiveModal, isProcessingFile, hasUploadedFiles } = useAppStore();
 
   const suggestions = [
     'Add Copay Card PSP',
@@ -44,6 +45,8 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
     },
     {
       title: 'Competitive Landscape',
+      tags: brandConfig.competitiveLandscape.tags,
+      description: brandConfig.competitiveLandscape.description,
       status: brandConfig.competitiveLandscape.status,
       approved: brandConfig.competitiveLandscape.approved
     }
@@ -201,7 +204,50 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
       {/* Main Content */}
       <div style={{ flex: 1, padding: '24px', overflow: 'auto' }}>
         <div>
-          {activeTab === 'brand' && brandItems.map((item, index) => (
+          {/* Show processing state */}
+          {isProcessingFile && (
+            <div style={{
+              padding: '60px',
+              textAlign: 'center',
+              backgroundColor: 'var(--bg-card)',
+              borderRadius: '8px',
+              border: '1px solid var(--border-subtle)',
+              marginBottom: '20px'
+            }}>
+              <div style={{
+                width: '48px',
+                height: '48px',
+                margin: '0 auto 20px',
+                border: '3px solid var(--border-primary)',
+                borderTop: '3px solid var(--accent-blue)',
+                borderRadius: '50%',
+                animation: 'spin 1s linear infinite'
+              }} />
+              <h3 style={{
+                fontSize: '16px',
+                fontWeight: '500',
+                color: 'var(--text-primary)',
+                marginBottom: '8px'
+              }}>
+                Processing your documents...
+              </h3>
+              <p style={{
+                fontSize: '13px',
+                color: 'var(--text-secondary)'
+              }}>
+                Extracting strategic insights and generating configuration suggestions
+              </p>
+              <style>{`
+                @keyframes spin {
+                  0% { transform: rotate(0deg); }
+                  100% { transform: rotate(360deg); }
+                }
+              `}</style>
+            </div>
+          )}
+          
+          {/* Show brand items only after file upload */}
+          {activeTab === 'brand' && hasUploadedFiles && !isProcessingFile && brandItems.map((item, index) => (
             <Card key={index}>
               <CardHeader>
                 <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
@@ -250,7 +296,19 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                   >
                     Approve
                   </Button>
-                  <Button variant="ghost" size="sm">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => {
+                      const itemKey = item.title === 'Brand' ? 'brand' : 
+                                     item.title === 'Brand Access Strategy' ? 'brandAccess' :
+                                     item.title === 'Sales Goals' ? 'salesGoals' :
+                                     item.title === 'Competitive Landscape' ? 'competitiveLandscape' : null;
+                      if (itemKey && onEdit) {
+                        onEdit(itemKey);
+                      }
+                    }}
+                  >
                     Edit
                   </Button>
                 </div>
@@ -258,7 +316,33 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
             </Card>
           ))}
           
-          {activeTab === 'setup' && (
+          {/* Show prompt to upload files if none uploaded */}
+          {activeTab === 'brand' && !hasUploadedFiles && !isProcessingFile && (
+            <div style={{
+              padding: '60px',
+              textAlign: 'center',
+              backgroundColor: 'var(--bg-card)',
+              borderRadius: '8px',
+              border: '1px solid var(--border-subtle)'
+            }}>
+              <h3 style={{
+                fontSize: '16px',
+                fontWeight: '500',
+                color: 'var(--text-primary)',
+                marginBottom: '8px'
+              }}>
+                No insights available yet
+              </h3>
+              <p style={{
+                fontSize: '13px',
+                color: 'var(--text-secondary)'
+              }}>
+                Upload brand strategy documents to generate configuration insights
+              </p>
+            </div>
+          )}
+          
+          {activeTab === 'setup' && hasUploadedFiles && (
             <>
               <Card>
                 <CardHeader>
@@ -316,7 +400,13 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                   </p>
                   <div style={{ display: 'flex', gap: '12px' }}>
                     <Button variant="primary" size="sm">Approve</Button>
-                    <Button variant="ghost" size="sm">View</Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={() => setActiveModal('call-plan')}
+                    >
+                      View
+                    </Button>
                   </div>
                 </CardContent>
               </Card>

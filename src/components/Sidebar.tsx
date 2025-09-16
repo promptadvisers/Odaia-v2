@@ -1,5 +1,6 @@
 import React from 'react';
 import { Users, FileText, Settings, User, Plus, Edit2 } from 'lucide-react';
+import odaiaLogo from '../assets/odaia.png';
 
 interface SidebarProps {
   activeSection?: string;
@@ -13,6 +14,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange
     { icon: Settings, label: 'Settings', id: 'settings' },
     { icon: User, label: 'Profile', id: 'profile' }
   ];
+  
+  const handleMainDashboardClick = () => {
+    // Clear the active section to go back to main dashboard
+    onSectionChange?.('');
+  };
 
   return (
     <div 
@@ -30,40 +36,26 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange
     >
       {/* Logo */}
       <div style={{ marginBottom: '24px' }}>
-        <div 
+        <button
+          onClick={handleMainDashboardClick}
           style={{
-            width: '32px',
-            height: '32px',
-            borderRadius: '50%',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            position: 'relative',
-            overflow: 'hidden',
-            background: 'conic-gradient(from 0deg, #3b82f6 0deg, #0ea5e9 90deg, #14b8a6 180deg, #10b981 270deg, #3b82f6 360deg)'
+            background: 'none',
+            border: 'none',
+            padding: 0,
+            cursor: 'pointer'
           }}
+          title="Go to Dashboard"
         >
-          <div 
+          <img 
+            src={odaiaLogo}
+            alt="ODAIA Logo"
             style={{
-              position: 'absolute',
-              inset: '3px',
-              borderRadius: '50%',
-              backgroundColor: 'var(--bg-main)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center'
+              width: '32px',
+              height: '32px',
+              objectFit: 'contain'
             }}
-          >
-            <div
-              style={{
-                width: '20px',
-                height: '20px',
-                borderRadius: '50%',
-                background: 'conic-gradient(from 0deg, #3b82f6 0deg, #0ea5e9 90deg, #14b8a6 180deg, #10b981 270deg, #3b82f6 360deg)'
-              }}
-            />
-          </div>
-        </div>
+          />
+        </button>
       </div>
 
       {/* Navigation */}
@@ -99,6 +91,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange
       {/* Bottom Actions */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: '4px', width: '100%' }}>
         <button 
+          onClick={handleMainDashboardClick}
           style={{
             backgroundColor: 'transparent',
             border: 'none',
@@ -108,10 +101,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange
             alignItems: 'center',
             justifyContent: 'center'
           }}
+          title="New Chat"
         >
           <Plus style={{ width: '20px', height: '20px', color: 'var(--text-muted)', strokeWidth: 1.5 }} />
         </button>
         <button 
+          onClick={handleMainDashboardClick}
           style={{
             backgroundColor: 'transparent',
             border: 'none',
@@ -121,6 +116,7 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange
             alignItems: 'center',
             justifyContent: 'center'
           }}
+          title="Edit Chat"
         >
           <Edit2 style={{ width: '20px', height: '20px', color: 'var(--text-muted)', strokeWidth: 1.5 }} />
         </button>

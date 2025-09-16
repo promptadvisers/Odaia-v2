@@ -16,9 +16,12 @@ import { LiveAnalytics } from './screens/LiveAnalytics';
 import { BrandAccessDialog } from './dialogs/BrandAccessDialog';
 import { HCPTargetingDialog } from './dialogs/HCPTargetingDialog';
 import { NewProjectDialog } from './dialogs/NewProjectDialog';
+import { EditBrandDialog } from './dialogs/EditBrandDialog';
+import { CallPlanDialog } from './dialogs/CallPlanDialog';
 
 function App() {
   const [activeTab, setActiveTab] = useState('brand');
+  const [editingItem, setEditingItem] = useState<any>(null);
   const { 
     activeSidebarItem, 
     setActiveSidebarItem, 
@@ -59,16 +62,16 @@ function App() {
       return <ProfileScreen />;
     }
 
-    // Otherwise show main dashboard with tabs
-    if (activeTab === 'live') {
-      return <LiveAnalytics />;
-    }
-
+    // Show main dashboard with tabs when no sidebar item is selected
     return (
       <div style={{ flex: 1, backgroundColor: 'var(--bg-main)', display: 'flex', flexDirection: 'column' }}>
         <Header tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
         <div style={{ flex: 1, overflow: 'auto' }}>
-          <MainDashboard onNavigate={handleNavigate} activeTab={activeTab} />
+          {activeTab === 'live' ? (
+            <LiveAnalytics />
+          ) : (
+            <MainDashboard onNavigate={handleNavigate} activeTab={activeTab} onEdit={setEditingItem} />
+          )}
         </div>
       </div>
     );
@@ -98,6 +101,17 @@ function App() {
         <NewProjectDialog 
           isOpen={activeModal === 'new-project'} 
           onClose={() => setActiveModal(null)} 
+        />
+        
+        <EditBrandDialog
+          isOpen={!!editingItem}
+          onClose={() => setEditingItem(null)}
+          itemKey={editingItem}
+        />
+        
+        <CallPlanDialog
+          isOpen={activeModal === 'call-plan'}
+          onClose={() => setActiveModal(null)}
         />
       </div>
     </Router>

@@ -65,23 +65,23 @@ const kpiCards = [
 
 export const LiveAnalytics: React.FC = () => {
   return (
-    <div style={{ padding: '24px', backgroundColor: 'var(--bg-main)', minHeight: '100vh' }}>
-      <div style={{ marginBottom: '24px' }}>
-        <h2 style={{ 
-          fontSize: '20px',
-          fontWeight: '600',
-          color: 'var(--text-primary)',
-          marginBottom: '8px'
-        }}>
-          Live Analytics Dashboard
-        </h2>
-        <p style={{ 
-          fontSize: '13px',
-          color: 'var(--text-secondary)'
-        }}>
-          Real-time performance metrics and insights
-        </p>
-      </div>
+    <div style={{ flex: 1, backgroundColor: 'var(--bg-main)', overflow: 'auto', padding: '24px' }}>
+        <div style={{ marginBottom: '24px' }}>
+          <h2 style={{ 
+            fontSize: '20px',
+            fontWeight: '600',
+            color: 'var(--text-primary)',
+            marginBottom: '8px'
+          }}>
+            Live Analytics Dashboard
+          </h2>
+          <p style={{ 
+            fontSize: '13px',
+            color: 'var(--text-secondary)'
+          }}>
+            Real-time performance metrics and insights
+          </p>
+        </div>
 
       {/* KPI Cards */}
       <div style={{

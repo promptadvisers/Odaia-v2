@@ -88,8 +88,18 @@ export const SettingsScreen: React.FC = () => {
   ];
 
   return (
-    <div style={{ padding: '24px' }}>
-      <div style={{ marginBottom: '24px' }}>
+    <div style={{ 
+      flex: 1,
+      backgroundColor: 'var(--bg-main)',
+      display: 'flex',
+      justifyContent: 'center'
+    }}>
+      <div style={{ 
+        width: '100%',
+        maxWidth: '900px',
+        padding: '24px'
+      }}>
+        <div style={{ marginBottom: '24px' }}>
         <h2 style={{ 
           fontSize: '20px',
           fontWeight: '600',
@@ -170,6 +180,7 @@ export const SettingsScreen: React.FC = () => {
             </div>
           </div>
         ))}
+        </div>
       </div>
     </div>
   );
