@@ -390,8 +390,7 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                       size="sm"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setEditingCardType('hcp-targeting');
-                        setActiveModal('setup-detail');
+                        setActiveModal('hcp-targeting');
                       }}
                     >
                       Approve
@@ -443,8 +442,7 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                       size="sm"
                       onClick={(e) => {
                         e.stopPropagation();
-                        setEditingCardType('call-plan');
-                        setActiveModal('setup-detail');
+                        setActiveModal('call-plan');
                       }}
                     >
                       Approve
