@@ -18,6 +18,7 @@ import { HCPTargetingDialog } from './dialogs/HCPTargetingDialog';
 import { NewProjectDialog } from './dialogs/NewProjectDialog';
 import { EditBrandDialog } from './dialogs/EditBrandDialog';
 import { CallPlanDialog } from './dialogs/CallPlanDialog';
+import { MedicalObjectivesDialog } from './dialogs/MedicalObjectivesDialog';
 
 function App() {
   const [activeTab, setActiveTab] = useState('brand');
@@ -111,6 +112,11 @@ function App() {
         
         <CallPlanDialog
           isOpen={activeModal === 'call-plan'}
+          onClose={() => setActiveModal(null)}
+        />
+        
+        <MedicalObjectivesDialog
+          isOpen={activeModal === 'medical-objectives'}
           onClose={() => setActiveModal(null)}
         />
       </div>

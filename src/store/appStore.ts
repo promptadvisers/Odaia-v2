@@ -32,6 +32,21 @@ interface BrandConfig {
     description?: string;
     approved: boolean;
   };
+  medicalObjectives: {
+    status: 'Ready' | 'Missing info' | 'Pending';
+    basketName: string;
+    basketScore: number;
+    therapeuticArea: string;
+    product: string;
+    indications: string[];
+    scoringWeights: Array<{
+      metric: string;
+      weight: number;
+      baseline: boolean;
+      percentile: boolean;
+    }>;
+    approved: boolean;
+  };
 }
 
 interface AppState {
@@ -116,6 +131,21 @@ export const useAppStore = create<AppState>((set) => ({
       status: 'Ready',
       tags: ['T-DM1', 'T-DXd', 'Sacituzumab'],
       description: 'The HER2+ metastatic breast cancer landscape includes key competitors like T-DM1 (established market leader), T-DXd (emerging threat with strong efficacy data), and Sacituzumab (growing adoption in triple-negative subset). Differentiation through safety profile and access programs is critical.',
+      approved: false
+    },
+    medicalObjectives: {
+      status: 'Ready',
+      basketName: 'Target Product Nacida',
+      basketScore: 7,
+      therapeuticArea: '',
+      product: '',
+      indications: ['SEA', 'EGPA', 'NP'],
+      scoringWeights: [
+        { metric: 'IOVIA TRx Share Monthly', weight: 50, baseline: true, percentile: false },
+        { metric: '2L Therapy HER+ Market', weight: 50, baseline: true, percentile: false },
+        { metric: 'XPO TRx', weight: 50, baseline: true, percentile: false },
+        { metric: 'NBRx Opportunity', weight: 50, baseline: true, percentile: false }
+      ],
       approved: false
     }
   },
