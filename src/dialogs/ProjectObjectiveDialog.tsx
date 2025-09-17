@@ -1,27 +1,105 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, ChevronDown, ChevronUp } from 'lucide-react';
 
-interface MedicalObjectivesDialogProps {
+interface ProjectObjectiveDialogProps {
   isOpen: boolean;
   onClose: () => void;
+  cardType?: 'medicalObjectives' | 'brandAccess' | 'salesGoals' | 'competitiveLandscape';
 }
 
-export const MedicalObjectivesDialog: React.FC<MedicalObjectivesDialogProps> = ({ isOpen, onClose }) => {
-  const [basketName, setBasketName] = useState('Target Product Nacida');
-  const [basketScore, setBasketScore] = useState('7');
-  const [therapeuticArea, setTherapeuticArea] = useState('');
-  const [product, setProduct] = useState('');
-  const [selectedIndications, setSelectedIndications] = useState({
-    SEA: true,
-    EGPA: true,
-    NP: true
-  });
+export const ProjectObjectiveDialog: React.FC<ProjectObjectiveDialogProps> = ({ 
+  isOpen, 
+  onClose, 
+  cardType = 'medicalObjectives' 
+}) => {
+  // Dynamic initial values based on card type
+  const getInitialValues = () => {
+    switch (cardType) {
+      case 'brandAccess':
+        return {
+          title: 'Brand Access Strategy: Objective 1',
+          basketName: 'OncoConnect Access Program',
+          basketScore: '8',
+          therapeuticArea: 'Oncology',
+          product: 'OncoThera',
+          indications: { 'PSP': true, 'Copay': true, 'Portal': true },
+          metrics: [
+            'Patient Enrollment Rate',
+            'Prior Auth Approval Time',
+            'Copay Card Utilization',
+            'Portal Active Users'
+          ]
+        };
+      case 'salesGoals':
+        return {
+          title: 'Sales Goals: Objective 1',
+          basketName: 'XPO TRx Growth Target',
+          basketScore: '9',
+          therapeuticArea: 'Oncology',
+          product: 'XPO',
+          indications: { 'NBRx': true, 'TRx': true, 'Volume': true },
+          metrics: [
+            'XPO TRx Share Monthly',
+            'NBRx Growth Rate',
+            'Market Share Increase',
+            'HCP Adoption Rate'
+          ]
+        };
+      case 'competitiveLandscape':
+        return {
+          title: 'Competitive Landscape: Objective 1',
+          basketName: 'Competitive Positioning',
+          basketScore: '7',
+          therapeuticArea: 'Oncology',
+          product: 'Market Analysis',
+          indications: { 'T-DM1': true, 'T-DXd': true, 'Sacituzumab': false },
+          metrics: [
+            'Market Share vs Competitors',
+            'Switch Rate Analysis',
+            'Competitive Win Rate',
+            'Differentiation Score'
+          ]
+        };
+      default: // medicalObjectives
+        return {
+          title: 'New Project: Objective 1',
+          basketName: 'Target Product Nacida',
+          basketScore: '7',
+          therapeuticArea: '',
+          product: '',
+          indications: { 'SEA': true, 'EGPA': true, 'NP': true },
+          metrics: [
+            'IOVIA TRx Share Monthly',
+            'IOVIA TRx Share Monthly',
+            'IOVIA TRx Share Monthly',
+            'IOVIA TRx Share Monthly'
+          ]
+        };
+    }
+  };
+
+  const initialValues = getInitialValues();
+  
+  const [basketName, setBasketName] = useState(initialValues.basketName);
+  const [basketScore, setBasketScore] = useState(initialValues.basketScore);
+  const [therapeuticArea, setTherapeuticArea] = useState(initialValues.therapeuticArea);
+  const [product, setProduct] = useState(initialValues.product);
+  const [selectedIndications, setSelectedIndications] = useState(initialValues.indications);
   const [expandedSections, setExpandedSections] = useState({
     portfolio: true,
     competitive: true,
     precursor: true
   });
 
+  // Reset values when card type changes
+  useEffect(() => {
+    const values = getInitialValues();
+    setBasketName(values.basketName);
+    setBasketScore(values.basketScore);
+    setTherapeuticArea(values.therapeuticArea);
+    setProduct(values.product);
+    setSelectedIndications(values.indications);
+  }, [cardType]);
 
   if (!isOpen) return null;
 
@@ -79,7 +157,7 @@ export const MedicalObjectivesDialog: React.FC<MedicalObjectivesDialogProps> = (
             color: 'var(--text-primary)',
             margin: 0
           }}>
-            New Project: Objective 1
+            {initialValues.title}
           </h2>
           <button
             onClick={onClose}
@@ -232,9 +310,10 @@ export const MedicalObjectivesDialog: React.FC<MedicalObjectivesDialogProps> = (
                   }}
                 >
                   <option value="">Select Therapeutic Areas</option>
-                  <option value="oncology">Oncology</option>
-                  <option value="cardiology">Cardiology</option>
-                  <option value="neurology">Neurology</option>
+                  <option value="Oncology">Oncology</option>
+                  <option value="Cardiology">Cardiology</option>
+                  <option value="Neurology">Neurology</option>
+                  <option value="Immunology">Immunology</option>
                 </select>
               </div>
 
@@ -261,8 +340,10 @@ export const MedicalObjectivesDialog: React.FC<MedicalObjectivesDialogProps> = (
                   }}
                 >
                   <option value="">Select Product</option>
-                  <option value="product1">Product 1</option>
-                  <option value="product2">Product 2</option>
+                  <option value="OncoThera">OncoThera</option>
+                  <option value="XPO">XPO</option>
+                  <option value="Nacida">Nacida</option>
+                  <option value="Market Analysis">Market Analysis</option>
                 </select>
               </div>
 
@@ -334,7 +415,10 @@ export const MedicalObjectivesDialog: React.FC<MedicalObjectivesDialogProps> = (
                       padding: '8px 8px 8px 0',
                       borderBottom: '1px solid var(--border-subtle)'
                     }}>
-                      IOVIA TRx Share Monthly
+                      {cardType === 'brandAccess' ? 'Access Metrics' : 
+                       cardType === 'salesGoals' ? 'Sales Metrics' :
+                       cardType === 'competitiveLandscape' ? 'Competitive Metrics' :
+                       'IOVIA TRx Share Monthly'}
                     </th>
                     <th style={{ 
                       textAlign: 'center', 
@@ -366,14 +450,14 @@ export const MedicalObjectivesDialog: React.FC<MedicalObjectivesDialogProps> = (
                   </tr>
                 </thead>
                 <tbody>
-                  {[1, 2, 3, 4].map((_, index) => (
+                  {initialValues.metrics.map((metric, index) => (
                     <tr key={index}>
                       <td style={{ 
                         fontSize: '12px', 
                         color: 'var(--text-primary)',
                         padding: '12px 8px 12px 0'
                       }}>
-                        IOVIA TRx Share Monthly
+                        {metric}
                       </td>
                       <td style={{ textAlign: 'center', padding: '12px 8px' }}>
                         <span style={{ 
@@ -447,7 +531,9 @@ export const MedicalObjectivesDialog: React.FC<MedicalObjectivesDialogProps> = (
                   fontSize: '13px',
                   color: 'var(--text-secondary)'
                 }}>
-                  No competitive opportunities configured
+                  {cardType === 'competitiveLandscape' 
+                    ? 'T-DM1, T-DXd, and Sacituzumab competitive positioning analysis'
+                    : 'No competitive opportunities configured'}
                 </p>
               </div>
             )}
@@ -493,7 +579,11 @@ export const MedicalObjectivesDialog: React.FC<MedicalObjectivesDialogProps> = (
                   fontSize: '13px',
                   color: 'var(--text-secondary)'
                 }}>
-                  No precursor configured
+                  {cardType === 'salesGoals' 
+                    ? '2L metastatic breast cancer patient flow analysis'
+                    : cardType === 'brandAccess'
+                    ? 'Patient journey from diagnosis to treatment access'
+                    : 'No precursor configured'}
                 </p>
               </div>
             )}

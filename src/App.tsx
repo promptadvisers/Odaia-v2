@@ -18,7 +18,7 @@ import { HCPTargetingDialog } from './dialogs/HCPTargetingDialog';
 import { NewProjectDialog } from './dialogs/NewProjectDialog';
 import { EditBrandDialog } from './dialogs/EditBrandDialog';
 import { CallPlanDialog } from './dialogs/CallPlanDialog';
-import { MedicalObjectivesDialog } from './dialogs/MedicalObjectivesDialog';
+import { ProjectObjectiveDialog } from './dialogs/ProjectObjectiveDialog';
 
 function App() {
   const [activeTab, setActiveTab] = useState('brand');
@@ -28,6 +28,7 @@ function App() {
     setActiveSidebarItem, 
     activeModal, 
     setActiveModal,
+    editingCardType,
     theme: _theme 
   } = useAppStore();
 
@@ -115,9 +116,10 @@ function App() {
           onClose={() => setActiveModal(null)}
         />
         
-        <MedicalObjectivesDialog
-          isOpen={activeModal === 'medical-objectives'}
+        <ProjectObjectiveDialog
+          isOpen={activeModal === 'project-objective'}
           onClose={() => setActiveModal(null)}
+          cardType={editingCardType || undefined}
         />
       </div>
     </Router>

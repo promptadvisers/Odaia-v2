@@ -13,7 +13,7 @@ interface MainDashboardProps {
 }
 
 export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, activeTab = 'brand', onEdit }) => {
-  const { uploadedFiles, brandConfig, setActiveModal, isProcessingFile, hasUploadedFiles } = useAppStore();
+  const { uploadedFiles, brandConfig, setActiveModal, isProcessingFile, hasUploadedFiles, setEditingCardType } = useAppStore();
 
   const suggestions = [
     'Add Copay Card PSP',
@@ -312,8 +312,12 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                                      item.title === 'Sales Goals' ? 'salesGoals' :
                                      item.title === 'Competitive Landscape' ? 'competitiveLandscape' :
                                      item.title === 'Medical Objectives' ? 'medicalObjectives' : null;
-                      if (itemKey === 'medicalObjectives') {
-                        setActiveModal('medical-objectives');
+                      
+                      // Route specific cards to the ProjectObjectiveDialog
+                      if (itemKey === 'medicalObjectives' || itemKey === 'brandAccess' || 
+                          itemKey === 'salesGoals' || itemKey === 'competitiveLandscape') {
+                        setEditingCardType(itemKey);
+                        setActiveModal('project-objective');
                       } else if (itemKey && onEdit) {
                         onEdit(itemKey);
                       }

@@ -67,6 +67,8 @@ interface AppState {
   // UI State
   activeModal: string | null;
   setActiveModal: (modal: string | null) => void;
+  editingCardType: 'medicalObjectives' | 'brandAccess' | 'salesGoals' | 'competitiveLandscape' | null;
+  setEditingCardType: (cardType: 'medicalObjectives' | 'brandAccess' | 'salesGoals' | 'competitiveLandscape' | null) => void;
   
   // Theme
   theme: 'dark' | 'light';
@@ -181,6 +183,8 @@ export const useAppStore = create<AppState>((set) => ({
   // UI State
   activeModal: null,
   setActiveModal: (modal) => set({ activeModal: modal }),
+  editingCardType: null,
+  setEditingCardType: (cardType) => set({ editingCardType: cardType }),
   
   // Theme
   theme: 'dark',
