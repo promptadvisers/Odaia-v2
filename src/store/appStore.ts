@@ -67,8 +67,8 @@ interface AppState {
   // UI State
   activeModal: string | null;
   setActiveModal: (modal: string | null) => void;
-  editingCardType: 'medicalObjectives' | 'brandAccess' | 'salesGoals' | 'competitiveLandscape' | null;
-  setEditingCardType: (cardType: 'medicalObjectives' | 'brandAccess' | 'salesGoals' | 'competitiveLandscape' | null) => void;
+  editingCardType: 'medicalObjectives' | 'brandAccess' | 'salesGoals' | 'competitiveLandscape' | 'hcp-targeting' | 'call-plan' | null;
+  setEditingCardType: (cardType: 'medicalObjectives' | 'brandAccess' | 'salesGoals' | 'competitiveLandscape' | 'hcp-targeting' | 'call-plan' | null) => void;
   
   // Theme
   theme: 'dark' | 'light';

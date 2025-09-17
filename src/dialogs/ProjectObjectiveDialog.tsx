@@ -4,7 +4,7 @@ import { X, ChevronDown, ChevronUp } from 'lucide-react';
 interface ProjectObjectiveDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  cardType?: 'medicalObjectives' | 'brandAccess' | 'salesGoals' | 'competitiveLandscape';
+  cardType?: 'medicalObjectives' | 'brandAccess' | 'salesGoals' | 'competitiveLandscape' | 'hcp-targeting' | 'call-plan';
 }
 
 export const ProjectObjectiveDialog: React.FC<ProjectObjectiveDialogProps> = ({ 

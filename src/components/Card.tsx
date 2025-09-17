@@ -4,17 +4,21 @@ import { cn } from '../lib/utils';
 interface CardProps {
   children: React.ReactNode;
   className?: string;
+  onClick?: (e: React.MouseEvent) => void;
+  style?: React.CSSProperties;
 }
 
-export const Card: React.FC<CardProps> = ({ children, className }) => {
+export const Card: React.FC<CardProps> = ({ children, className, onClick, style }) => {
   return (
     <div 
       className={cn('rounded-lg', className)}
+      onClick={onClick}
       style={{
         backgroundColor: 'var(--bg-card)',
         border: '1px solid var(--border-subtle)',
         padding: '20px',
-        marginBottom: '12px'
+        marginBottom: '12px',
+        ...style
       }}
     >
       {children}

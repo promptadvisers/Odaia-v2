@@ -19,6 +19,7 @@ import { NewProjectDialog } from './dialogs/NewProjectDialog';
 import { EditBrandDialog } from './dialogs/EditBrandDialog';
 import { CallPlanDialog } from './dialogs/CallPlanDialog';
 import { ProjectObjectiveDialog } from './dialogs/ProjectObjectiveDialog';
+import { SetupDetailDialog } from './dialogs/SetupDetailDialog';
 
 function App() {
   const [activeTab, setActiveTab] = useState('brand');
@@ -120,6 +121,12 @@ function App() {
           isOpen={activeModal === 'project-objective'}
           onClose={() => setActiveModal(null)}
           cardType={editingCardType || undefined}
+        />
+        
+        <SetupDetailDialog
+          isOpen={activeModal === 'setup-detail'}
+          onClose={() => setActiveModal(null)}
+          cardType={editingCardType === 'hcp-targeting' || editingCardType === 'call-plan' ? editingCardType : undefined}
         />
       </div>
     </Router>

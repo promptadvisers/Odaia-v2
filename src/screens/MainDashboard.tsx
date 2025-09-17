@@ -358,7 +358,16 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
           
           {activeTab === 'setup' && hasUploadedFiles && (
             <>
-              <Card>
+              <Card 
+                onClick={(e: React.MouseEvent) => {
+                  // Don't trigger if clicking on buttons
+                  if ((e.target as HTMLElement).tagName !== 'BUTTON') {
+                    setEditingCardType('hcp-targeting');
+                    setActiveModal('setup-detail');
+                  }
+                }}
+                style={{ cursor: 'pointer' }}
+              >
                 <CardHeader>
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                     <div>
@@ -379,14 +388,20 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                     <Button 
                       variant="primary" 
                       size="sm"
-                      onClick={() => setActiveModal('hcp-targeting')}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveModal('hcp-targeting');
+                      }}
                     >
                       Approve
                     </Button>
                     <Button 
                       variant="ghost" 
                       size="sm"
-                      onClick={() => setActiveModal('hcp-targeting')}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveModal('hcp-targeting');
+                      }}
                     >
                       View
                     </Button>
@@ -394,7 +409,16 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                 </CardContent>
               </Card>
               
-              <Card>
+              <Card
+                onClick={(e: React.MouseEvent) => {
+                  // Don't trigger if clicking on buttons
+                  if ((e.target as HTMLElement).tagName !== 'BUTTON') {
+                    setEditingCardType('call-plan');
+                    setActiveModal('setup-detail');
+                  }
+                }}
+                style={{ cursor: 'pointer' }}
+              >
                 <CardHeader>
                   <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
                     <div>
@@ -413,11 +437,23 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                     Define what, how and how often you would like our suggestions delivered to your sales reps.
                   </p>
                   <div style={{ display: 'flex', gap: '12px' }}>
-                    <Button variant="primary" size="sm">Approve</Button>
+                    <Button 
+                      variant="primary" 
+                      size="sm"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // Handle approve
+                      }}
+                    >
+                      Approve
+                    </Button>
                     <Button 
                       variant="ghost" 
                       size="sm"
-                      onClick={() => setActiveModal('call-plan')}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveModal('call-plan');
+                      }}
                     >
                       View
                     </Button>
