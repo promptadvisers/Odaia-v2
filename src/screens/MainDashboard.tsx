@@ -296,7 +296,11 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                     onClick={() => {
                       if (item.onClick) {
                         item.onClick();
+                      } else if (item.title === 'Brand Access Strategy' && item.status === 'Missing info') {
+                        // If Brand Access Strategy has missing info, open the form dialog
+                        setActiveModal('brand-access');
                       } else if (item.title === 'Brand Access Strategy') {
+                        // Otherwise, approve normally
                         setActiveModal('brand-access');
                       }
                     }}
@@ -313,8 +317,12 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                                      item.title === 'Competitive Landscape' ? 'competitiveLandscape' :
                                      item.title === 'Medical Objectives' ? 'medicalObjectives' : null;
                       
-                      // Route specific cards to the ProjectObjectiveDialog
-                      if (itemKey === 'medicalObjectives' || itemKey === 'brandAccess' || 
+                      // If Brand Access Strategy has missing info, open the form dialog
+                      if (itemKey === 'brandAccess' && item.status === 'Missing info') {
+                        setActiveModal('brand-access');
+                      }
+                      // Otherwise route specific cards to the ProjectObjectiveDialog
+                      else if (itemKey === 'medicalObjectives' || itemKey === 'brandAccess' || 
                           itemKey === 'salesGoals' || itemKey === 'competitiveLandscape') {
                         setEditingCardType(itemKey);
                         setActiveModal('project-objective');
