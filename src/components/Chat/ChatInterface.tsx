@@ -45,7 +45,8 @@ export const ChatInterface: React.FC = () => {
           flex: 1,
           overflowY: 'auto',
           padding: '20px 0',
-          marginBottom: '16px'
+          marginBottom: '16px',
+          minHeight: 0
         }}
       >
         {/* Show messages */}
@@ -116,9 +117,16 @@ export const ChatInterface: React.FC = () => {
         
         {/* Pre-prompted buttons */}
         {prePrompts.length > 0 && !isTyping && (
-          <div style={{ marginTop: '16px' }}>
+          <div style={{ 
+            marginTop: '16px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '8px'
+          }}>
             {prePrompts.map((prompt) => (
-              <PrePromptedButton key={prompt.id} prompt={prompt} />
+              <div key={prompt.id} style={{ flex: '0 0 auto', maxWidth: '100%' }}>
+                <PrePromptedButton prompt={prompt} />
+              </div>
             ))}
           </div>
         )}
@@ -126,13 +134,14 @@ export const ChatInterface: React.FC = () => {
         <div ref={messagesEndRef} />
       </div>
       
-      {/* Input Area */}
+      {/* Input Area - Always visible */}
       <div style={{
         backgroundColor: 'var(--bg-input)',
         borderRadius: '8px',
         border: '1px solid var(--border-subtle)',
         padding: '12px',
-        position: 'relative'
+        position: 'relative',
+        marginTop: 'auto'
       }}>
         <textarea
           placeholder="Ask Agent"
@@ -148,7 +157,7 @@ export const ChatInterface: React.FC = () => {
             fontFamily: 'inherit'
           }}
           rows={3}
-          disabled={true} // Disabled for demo
+          disabled={currentStep < 7} // Disabled during demo
         />
         <div style={{
           display: 'flex',
@@ -156,7 +165,7 @@ export const ChatInterface: React.FC = () => {
           marginTop: '8px'
         }}>
           <button
-            disabled={true} // Disabled for demo
+            disabled={currentStep < 7} // Disabled during demo
             style={{
               padding: '6px 12px',
               backgroundColor: '#3b82f6',
@@ -165,8 +174,8 @@ export const ChatInterface: React.FC = () => {
               color: '#ffffff',
               fontSize: '13px',
               fontWeight: '500',
-              cursor: 'not-allowed',
-              opacity: 0.5,
+              cursor: currentStep < 7 ? 'not-allowed' : 'pointer',
+              opacity: currentStep < 7 ? 0.5 : 1,
               display: 'flex',
               alignItems: 'center',
               gap: '6px'

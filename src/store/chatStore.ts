@@ -66,18 +66,32 @@ export const useChatStore = create<ChatState>((set, get) => ({
       
       switch(step) {
         case 0:
-          // Initial state - show first prompt
-          setPrePrompts([{
-            id: '1',
-            text: 'Hey BAB, list all the missing or disapproved config',
-            action: () => get().executeDemoStep(1),
-            visible: true
-          }]);
+          // Initial state - show multiple prompt options
+          setPrePrompts([
+            {
+              id: '1',
+              text: 'List missing or disapproved configurations',
+              action: () => get().executeDemoStep(1),
+              visible: true
+            },
+            {
+              id: '1b',
+              text: 'Show incomplete brand settings',
+              action: () => get().executeDemoStep(1),
+              visible: true
+            },
+            {
+              id: '1c',
+              text: 'Review configuration status',
+              action: () => get().executeDemoStep(1),
+              visible: true
+            }
+          ]);
           break;
           
         case 1:
           // Step 1: List missing configs
-          addMessage({ type: 'user', content: 'Hey BAB, list all the missing or disapproved config' });
+          addMessage({ type: 'user', content: 'List missing or disapproved configurations' });
           
           setTimeout(() => {
             addMessage({
@@ -96,19 +110,33 @@ export const useChatStore = create<ChatState>((set, get) => ({
 Would you like me to help configure any of these items?`
             });
             
-            // Show next prompt
-            setPrePrompts([{
-              id: '2',
-              text: 'OK now change the weight for trx_indication metric to 0.5',
-              action: () => get().executeDemoStep(2),
-              visible: true
-            }]);
+            // Show next prompt options
+            setPrePrompts([
+              {
+                id: '2',
+                text: 'Change trx_indication weight to 0.5',
+                action: () => get().executeDemoStep(2),
+                visible: true
+              },
+              {
+                id: '2b',
+                text: 'Adjust metric weights',
+                action: () => get().executeDemoStep(2),
+                visible: true
+              },
+              {
+                id: '2c',
+                text: 'Update PowerScore configuration',
+                action: () => get().executeDemoStep(2),
+                visible: true
+              }
+            ]);
           }, 1000);
           break;
           
         case 2:
           // Step 2: Change metric weight
-          addMessage({ type: 'user', content: 'OK now change the weight for trx_indication metric to 0.5' });
+          addMessage({ type: 'user', content: 'Change trx_indication weight to 0.5' });
           
           setTimeout(() => {
             addMessage({
@@ -123,19 +151,27 @@ Would you like me to help configure any of these items?`
             );
             appStore.updateProductConfig({ metrics: updatedMetrics });
             
-            // Show next prompt
-            setPrePrompts([{
-              id: '3',
-              text: 'Add the metric xpo_dollars to the target basket, but with no PS weight.',
-              action: () => get().executeDemoStep(3),
-              visible: true
-            }]);
+            // Show next prompt options
+            setPrePrompts([
+              {
+                id: '3',
+                text: 'Add xpo_dollars metric with no weight',
+                action: () => get().executeDemoStep(3),
+                visible: true
+              },
+              {
+                id: '3b',
+                text: 'Include new metric in basket',
+                action: () => get().executeDemoStep(3),
+                visible: true
+              }
+            ]);
           }, 1000);
           break;
           
         case 3:
           // Step 3: Add metric with warning
-          addMessage({ type: 'user', content: 'Add the metric xpo_dollars to the target basket, but with no PS weight.' });
+          addMessage({ type: 'user', content: 'Add xpo_dollars metric with no weight' });
           
           setTimeout(() => {
             addMessage({
@@ -149,19 +185,27 @@ Would you like me to help configure any of these items?`
               metrics: [...currentMetrics, { name: 'xpo_dollars', weight: 0, visualize: false }]
             });
             
-            // Show next prompt
-            setPrePrompts([{
-              id: '4',
-              text: "You're right, please assign a weight of 0.2",
-              action: () => get().executeDemoStep(4),
-              visible: true
-            }]);
+            // Show next prompt options
+            setPrePrompts([
+              {
+                id: '4',
+                text: 'Assign weight of 0.2',
+                action: () => get().executeDemoStep(4),
+                visible: true
+              },
+              {
+                id: '4b',
+                text: 'Update metric weight',
+                action: () => get().executeDemoStep(4),
+                visible: true
+              }
+            ]);
           }, 1000);
           break;
           
         case 4:
           // Step 4: Update weight based on suggestion
-          addMessage({ type: 'user', content: "You're right, please assign a weight of 0.2" });
+          addMessage({ type: 'user', content: 'Assign weight of 0.2' });
           
           setTimeout(() => {
             addMessage({
@@ -196,13 +240,21 @@ Would you like me to help configure any of these items?`
               content: 'Great. What scenarios would you like to run?'
             });
             
-            // Show scenario definition prompt
-            setPrePrompts([{
-              id: '6',
-              text: 'Run one simulation with the current config, and another with xpo_dollars at 0.4 and trx_indication at 0.3',
-              action: () => get().executeDemoStep(6),
-              visible: true
-            }]);
+            // Show scenario definition prompt options
+            setPrePrompts([
+              {
+                id: '6',
+                text: 'Run simulation with current and modified configs',
+                action: () => get().executeDemoStep(6),
+                visible: true
+              },
+              {
+                id: '6b',
+                text: 'Compare multiple scenarios',
+                action: () => get().executeDemoStep(6),
+                visible: true
+              }
+            ]);
           }, 1000);
           break;
           
@@ -210,7 +262,7 @@ Would you like me to help configure any of these items?`
           // Step 6: Define scenarios
           addMessage({ 
             type: 'user', 
-            content: 'Run one simulation with the current config, and another with xpo_dollars at 0.4 and trx_indication at 0.3' 
+            content: 'Run simulation with current config and xpo_dollars at 0.4, trx_indication at 0.3' 
           });
           
           setTimeout(() => {
@@ -231,12 +283,20 @@ Would you like me to help configure any of these items?`
               
               // Show result selection prompt after delay
               setTimeout(() => {
-                setPrePrompts([{
-                  id: '7',
-                  text: "Looks like the simulated one is better. Let's proceed with that one.",
-                  action: () => get().executeDemoStep(7),
-                  visible: true
-                }]);
+                setPrePrompts([
+                  {
+                    id: '7',
+                    text: 'Select simulated configuration',
+                    action: () => get().executeDemoStep(7),
+                    visible: true
+                  },
+                  {
+                    id: '7b',
+                    text: 'Apply winning parameters',
+                    action: () => get().executeDemoStep(7),
+                    visible: true
+                  }
+                ]);
               }, 5000);
             }, 2000);
           }, 1000);
@@ -246,7 +306,7 @@ Would you like me to help configure any of these items?`
           // Step 7: Select winning scenario
           addMessage({ 
             type: 'user', 
-            content: "Looks like the simulated one is better. Let's proceed with that one." 
+            content: 'Select simulated configuration as winning option' 
           });
           
           setTimeout(() => {

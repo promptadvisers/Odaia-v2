@@ -46,7 +46,7 @@ export const FinalReportView: React.FC<FinalReportViewProps> = ({
     { name: 'D', value: 45 }
   ];
 
-  // Mock report sections
+  // Pharmaceutical-specific report sections matching screenshots
   const reportSections: ReportSection[] = [
     {
       title: 'Curation Signals',
@@ -58,7 +58,7 @@ export const FinalReportView: React.FC<FinalReportViewProps> = ({
     {
       title: 'Nearby Anchor Signal',
       items: [
-        { label: 'Specifies the impact of anchor appointments on the curated list', value: '' }
+        { label: 'Specifies how HCPs with recent touchpoints are curated for the next call', value: '' }
       ]
     },
     {
@@ -72,7 +72,9 @@ export const FinalReportView: React.FC<FinalReportViewProps> = ({
     {
       title: 'PowerScore Signal',
       items: [
-        { label: 'PowerScore', value: 'Medium' }
+        { label: 'PowerScore (HCP Overall)', value: 'Medium' },
+        { label: 'PowerScore by Segment', value: 'Medium' },
+        { label: 'Segment Scores Signal', value: '' }
       ]
     },
     {
@@ -82,20 +84,27 @@ export const FinalReportView: React.FC<FinalReportViewProps> = ({
         { label: 'Shrinkers', value: '' },
         { label: 'Switch-In', value: '' },
         { label: 'Switch-Out', value: '' },
-        { label: 'Believer', value: '' },
-        { label: 'Lorem ipsum', value: '' }
+        { label: 'Believers', value: '' },
+        { label: 'Reverters', value: '' },
+        { label: 'Medium', value: '' }
       ]
     },
     {
       title: 'Event Activity Signal',
       items: [
-        { label: 'Allow attribution to override pre-set impact', value: '' },
+        { label: 'Allow attribution to override preset impact', value: '' },
         { label: 'Phone Call', value: 'Medium' },
         { label: 'Email Opened', value: 'Medium' },
         { label: 'Website Search', value: 'Medium' },
         { label: 'Event Attendance', value: 'Medium' },
-        { label: 'Request a rep', value: 'Medium' },
+        { label: 'Request a Rep', value: 'Medium' },
         { label: 'Lorem ipsum', value: 'Medium' }
+      ]
+    },
+    {
+      title: 'Upcoming Appointments Signal',
+      items: [
+        { label: 'Include upcoming appointments in curation', value: '' }
       ]
     }
   ];
@@ -103,10 +112,19 @@ export const FinalReportView: React.FC<FinalReportViewProps> = ({
   const bucketConfigs = [
     {
       title: 'Bucket Configs',
-      subtitle: 'Maximum List Size: 30 HCPs',
+      subtitle: 'Maximum List Size: 10% HCPs',
       configs: [
-        { label: 'Bucket Size: 50%', frequency: 'Most Often', note: 'Never' },
-        { label: 'Relative Frequency', frequency: 'Every 4 weeks', note: 'Estimated Frequency: Every 4 weeks' }
+        { label: 'Bucket Size: 10%', frequency: 'Most Often', note: 'Never' },
+        { label: 'Relative Frequency', frequency: '', note: 'Estimated Frequency: Every 4 weeks' },
+        { label: 'Overflow Bucket Configs', frequency: '', note: '' }
+      ]
+    },
+    {
+      title: 'Overflow Bucket Configs',
+      subtitle: '',
+      configs: [
+        { label: 'Bucket Size: 10%', frequency: 'Most Often', note: '' },
+        { label: 'Relative Frequency', frequency: '', note: 'Estimated Frequency: Every 8 weeks' }
       ]
     }
   ];
@@ -114,13 +132,12 @@ export const FinalReportView: React.FC<FinalReportViewProps> = ({
   const specialtiesSegments = {
     specialties: [
       'Specialty A', 'Specialty B', 'Specialty C', 'Specialty D', 
-      'Specialty E', 'Specialty F', 'Specialty G', 'Specialty H', 
-      'Specialty I'
+      'Specialty E', 'Specialty F', 'Specialty G', 'Specialty H'
     ],
     segments: [
-      'Segment A', 'Segment B', 'Segment C', 'Segment D', 
-      'Segment E', 'Segment F', 'Segment G', 'Segment H', 
-      'Segment I'
+      'Segment A', 'Segment B', 'Segment C', 
+      'Segment D', 'Segment E', 'Segment F', 
+      'Segment G', 'Segment H', 'Segment I'
     ]
   };
 
@@ -412,17 +429,19 @@ export const FinalReportView: React.FC<FinalReportViewProps> = ({
                       </div>
                     </div>
                   ))}
-                  <div style={{
-                    marginTop: '12px',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: '4px'
-                  }}>
-                    <input type="checkbox" defaultChecked />
-                    <span style={{ fontSize: '12px', color: '#ffffff' }}>
-                      Assign 0 PowerScore HCPs to overflow bucket
-                    </span>
-                  </div>
+                  {idx === 0 && (
+                    <div style={{
+                      marginTop: '12px',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '4px'
+                    }}>
+                      <input type="checkbox" defaultChecked />
+                      <span style={{ fontSize: '12px', color: '#ffffff' }}>
+                        Assign 0 PowerScore HCPs to overflow bucket
+                      </span>
+                    </div>
+                  )}
                 </div>
               ))}
 

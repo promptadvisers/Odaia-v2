@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { X } from 'lucide-react';
-import { TreeSelector } from './TreeSelector';
 import { MetricsTable } from './MetricsTable';
 import { BasketSection } from './BasketSection';
 

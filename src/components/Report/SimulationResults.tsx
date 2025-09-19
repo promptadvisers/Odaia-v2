@@ -1,6 +1,6 @@
 import React from 'react';
 import { Badge } from '../Badge';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import type { Simulation } from './SimulationRunner';
 
 interface SimulationResultsProps {
@@ -9,11 +9,11 @@ interface SimulationResultsProps {
 }
 
 export const SimulationResults: React.FC<SimulationResultsProps> = ({ simulation, onReview }) => {
-  // Transform data for chart
-  const chartData = simulation.results?.powerScoreData.map((segment, idx) => ({
+  // Transform data for grouped bar chart (matching screenshot)
+  const chartData = simulation.results?.powerScoreData.map((segment) => ({
     name: segment.segment,
-    value: segment.values[segment.values.length - 1], // Use last value
-    prevValue: segment.values[0] // First value for comparison
+    Current: segment.values[0], // Current configuration
+    Simulated: segment.values[segment.values.length - 1] // Simulated configuration
   })) || [];
 
   return (
@@ -67,7 +67,7 @@ export const SimulationResults: React.FC<SimulationResultsProps> = ({ simulation
         </h4>
         <div style={{ width: '100%', height: '200px' }}>
           <ResponsiveContainer>
-            <BarChart data={chartData}>
+            <BarChart data={chartData} barGap={2}>
               <CartesianGrid strokeDasharray="3 3" stroke="#2a3441" />
               <XAxis 
                 dataKey="name" 
@@ -88,7 +88,14 @@ export const SimulationResults: React.FC<SimulationResultsProps> = ({ simulation
                 }}
                 labelStyle={{ color: '#ffffff' }}
               />
-              <Bar dataKey="value" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+              <Legend 
+                wrapperStyle={{
+                  paddingTop: '10px',
+                  fontSize: '12px'
+                }}
+              />
+              <Bar dataKey="Current" fill="#5a7fb8" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="Simulated" fill="#3b82f6" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>

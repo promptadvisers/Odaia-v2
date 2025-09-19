@@ -57,10 +57,7 @@ export const TreeSelector: React.FC<TreeSelectorProps> = ({
             paddingLeft: `${12 + level * 24}px`,
             cursor: 'pointer',
             backgroundColor: 'transparent',
-            transition: 'background-color 0.2s',
-            ':hover': {
-              backgroundColor: '#2a3441'
-            }
+            transition: 'background-color 0.2s'
           }}
           onMouseEnter={(e) => {
             e.currentTarget.style.backgroundColor = '#2a3441';

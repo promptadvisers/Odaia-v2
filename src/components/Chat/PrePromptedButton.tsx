@@ -1,5 +1,4 @@
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
 import type { PrePrompt } from '../../store/chatStore';
 
 interface PrePromptedButtonProps {
@@ -11,39 +10,41 @@ export const PrePromptedButton: React.FC<PrePromptedButtonProps> = ({ prompt }) 
   
   return (
     <div style={{
-      animation: 'slideIn 0.3s ease-out'
+      animation: 'slideIn 0.3s ease-out',
+      marginBottom: '8px'
     }}>
       <button
         onClick={prompt.action}
         style={{
           width: '100%',
-          textAlign: 'left',
-          padding: '12px 14px',
-          backgroundColor: 'var(--bg-input)',
-          borderRadius: '8px',
-          border: '1px solid var(--border-subtle)',
+          textAlign: 'center',
+          padding: '10px 14px',
+          backgroundColor: 'transparent',
+          borderRadius: '20px',
+          border: '1px solid rgba(59, 130, 246, 0.3)',
           fontSize: '13px',
           color: 'var(--text-primary)',
           cursor: 'pointer',
           transition: 'all 200ms',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          marginBottom: '8px'
+          display: 'block',
+          position: 'relative',
+          boxShadow: '0 0 12px rgba(59, 130, 246, 0.15)',
+          whiteSpace: 'nowrap',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis'
         }}
         onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = 'var(--bg-hover)';
-          e.currentTarget.style.borderColor = '#3b82f6';
-          e.currentTarget.style.transform = 'translateX(2px)';
+          e.currentTarget.style.backgroundColor = 'rgba(59, 130, 246, 0.1)';
+          e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.5)';
+          e.currentTarget.style.boxShadow = '0 0 20px rgba(59, 130, 246, 0.3)';
         }}
         onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = 'var(--bg-input)';
-          e.currentTarget.style.borderColor = 'var(--border-subtle)';
-          e.currentTarget.style.transform = 'translateX(0)';
+          e.currentTarget.style.backgroundColor = 'transparent';
+          e.currentTarget.style.borderColor = 'rgba(59, 130, 246, 0.3)';
+          e.currentTarget.style.boxShadow = '0 0 12px rgba(59, 130, 246, 0.15)';
         }}
       >
         <span>{prompt.text}</span>
-        <ArrowRight size={14} style={{ color: '#3b82f6' }} />
       </button>
       
       <style>{`

@@ -17,11 +17,6 @@ interface MainDashboardProps {
 export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, activeTab = 'brand', onEdit }) => {
   const { uploadedFiles, brandConfig, setActiveModal, isProcessingFile, hasUploadedFiles, setEditingCardType } = useAppStore();
 
-  const suggestions = [
-    'Add Copay Card PSP',
-    'Change Sales goals to NBRx increase by 10%'
-  ];
-
   const brandItems = [
     {
       title: 'Brand',
