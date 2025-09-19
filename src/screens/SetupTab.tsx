@@ -8,6 +8,7 @@ import { ProductTreeModal } from '../components/Setup/ProductTreeModal';
 export const SetupTab: React.FC = () => {
   const { productConfig, updateProductConfig, hasUploadedFiles } = useAppStore();
   const [showProductModal, setShowProductModal] = useState(false);
+  const [showCompetitiveModal, setShowCompetitiveModal] = useState(false);
 
   if (!hasUploadedFiles) {
     return (
@@ -39,7 +40,7 @@ export const SetupTab: React.FC = () => {
 
   return (
     <>
-      <div style={{ padding: '20px' }}>
+      <div style={{ padding: '20px', display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '20px' }}>
         <Card>
           <CardHeader>
             <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
@@ -114,6 +115,82 @@ export const SetupTab: React.FC = () => {
                 }}
               >
                 Run a Simulation
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Competitive Products Card */}
+        <Card>
+          <CardHeader>
+            <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
+              <div>
+                <CardTitle>Competitive Products</CardTitle>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '4px' }}>
+                  <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>
+                    Market Analysis
+                  </span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>
+                    • Total Market Tree
+                  </span>
+                </div>
+              </div>
+              <Badge variant="warning">Not Configured</Badge>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '20px' }}>
+              Define competitive landscape, market segments, and product positioning within the total market tree.
+            </p>
+            
+            <div style={{ marginBottom: '16px' }}>
+              <h4 style={{ fontSize: '14px', fontWeight: '500', color: 'var(--text-primary)', marginBottom: '12px' }}>
+                Market Segments:
+              </h4>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <span style={{ fontSize: '13px', color: 'var(--text-secondary)', minWidth: '120px' }}>
+                    Primary Market:
+                  </span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+                    Not configured
+                  </span>
+                </div>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <span style={{ fontSize: '13px', color: 'var(--text-secondary)', minWidth: '120px' }}>
+                    Competitors:
+                  </span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+                    0 identified
+                  </span>
+                </div>
+                <div style={{ display: 'flex', gap: '8px' }}>
+                  <span style={{ fontSize: '13px', color: 'var(--text-secondary)', minWidth: '120px' }}>
+                    Market Share:
+                  </span>
+                  <span style={{ fontSize: '13px', color: 'var(--text-primary)' }}>
+                    Not analyzed
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '12px' }}>
+              <Button 
+                variant="primary" 
+                size="sm"
+                onClick={() => setShowCompetitiveModal(true)}
+              >
+                Configure Market
+              </Button>
+              <Button 
+                variant="ghost" 
+                size="sm"
+                onClick={() => {
+                  console.log('View tree clicked');
+                }}
+              >
+                View Market Tree
               </Button>
             </div>
           </CardContent>
