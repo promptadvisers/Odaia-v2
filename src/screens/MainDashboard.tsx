@@ -6,6 +6,7 @@ import { FileUpload, FileList } from '../components/FileUpload';
 import { Plus, Edit2 } from 'lucide-react';
 import { useAppStore } from '../store/appStore';
 import { SetupTab } from './SetupTab';
+import { ChatInterface } from '../components/Chat/ChatInterface';
 
 interface MainDashboardProps {
   onNavigate?: (screen: string) => void;
@@ -114,98 +115,79 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
             <FileList />
           )}
           
-          {/* Suggestions */}
-          {uploadedFiles.length > 0 && (
-            <div style={{ display: 'flex', flexDirection: 'column', gap: '8px', marginTop: '24px', marginBottom: '24px' }}>
-              {suggestions.map((suggestion, index) => (
-                <button
-                  key={index}
+          {/* Chat Interface - Replace suggestions and input area when files are uploaded */}
+          {uploadedFiles.length > 0 && activeTab === 'brand' ? (
+            <div style={{ 
+              marginTop: '24px', 
+              flex: 1,
+              display: 'flex',
+              flexDirection: 'column',
+              minHeight: 0
+            }}>
+              <ChatInterface />
+            </div>
+          ) : (
+            /* Original Input Area for when no files uploaded */
+            <div style={{ marginTop: 'auto' }}>
+              <div style={{ 
+                backgroundColor: 'var(--bg-input)',
+                borderRadius: '8px',
+                border: '1px solid var(--border-subtle)',
+                padding: '12px'
+              }}>
+                <textarea
                   style={{
                     width: '100%',
-                    textAlign: 'left',
-                    padding: '10px 14px',
-                    backgroundColor: 'var(--bg-input)',
-                    borderRadius: '8px',
-                    border: '1px solid var(--border-subtle)',
+                    backgroundColor: 'transparent',
+                    color: 'var(--text-primary)',
                     fontSize: '13px',
-                    color: 'var(--text-secondary)',
-                    cursor: 'pointer',
-                    transition: 'all 200ms'
+                    resize: 'none',
+                    border: 'none',
+                    outline: 'none',
+                    minHeight: '80px',
+                    fontFamily: 'inherit'
                   }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--bg-hover)';
-                    e.currentTarget.style.color = 'var(--text-primary)';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'var(--bg-input)';
-                    e.currentTarget.style.color = 'var(--text-secondary)';
-                  }}
-                >
-                  {suggestion}
-                </button>
-              ))}
-            </div>
-          )}
-          
-          {/* Input Area */}
-          <div style={{ marginTop: 'auto' }}>
-            <div style={{ 
-              backgroundColor: 'var(--bg-input)',
-              borderRadius: '8px',
-              border: '1px solid var(--border-subtle)',
-              padding: '12px'
-            }}>
-              <textarea
-                style={{
-                  width: '100%',
-                  backgroundColor: 'transparent',
-                  color: 'var(--text-primary)',
-                  fontSize: '13px',
-                  resize: 'none',
-                  border: 'none',
-                  outline: 'none',
-                  minHeight: '80px',
-                  fontFamily: 'inherit'
-                }}
-                placeholder="Ask Agent"
-                rows={5}
-              />
-              <div style={{ 
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                marginTop: '12px'
-              }}>
-                <button 
-                  onClick={() => setActiveModal('new-project')}
-                  style={{
-                    padding: '6px',
+                  placeholder="Ask Agent"
+                  rows={5}
+                  disabled
+                />
+                <div style={{ 
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  marginTop: '12px'
+                }}>
+                  <button 
+                    onClick={() => setActiveModal('new-project')}
+                    style={{
+                      padding: '6px',
+                      backgroundColor: 'transparent',
+                      border: 'none',
+                      cursor: 'pointer',
+                      borderRadius: '4px',
+                      transition: 'background-color 200ms'
+                    }}
+                  >
+                    <Plus style={{ width: '18px', height: '18px', color: 'var(--text-muted)' }} />
+                  </button>
+                  <button style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '6px',
+                    padding: '6px 10px',
                     backgroundColor: 'transparent',
                     border: 'none',
                     cursor: 'pointer',
                     borderRadius: '4px',
                     transition: 'background-color 200ms'
-                  }}
-                >
-                  <Plus style={{ width: '18px', height: '18px', color: 'var(--text-muted)' }} />
-                </button>
-                <button style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '6px',
-                  padding: '6px 10px',
-                  backgroundColor: 'transparent',
-                  border: 'none',
-                  cursor: 'pointer',
-                  borderRadius: '4px',
-                  transition: 'background-color 200ms'
-                }}>
-                  <Edit2 style={{ width: '14px', height: '14px', color: 'var(--text-muted)' }} />
-                  <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Edit</span>
-                </button>
+                  }}>
+                    <Edit2 style={{ width: '14px', height: '14px', color: 'var(--text-muted)' }} />
+                    <span style={{ fontSize: '12px', color: 'var(--text-muted)' }}>Edit</span>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
       
