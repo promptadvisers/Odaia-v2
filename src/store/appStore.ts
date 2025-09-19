@@ -24,6 +24,7 @@ interface BrandConfig {
   };
   salesGoals: {
     status: 'Ready' | 'Missing info' | 'Pending';
+    description?: string;
     approved: boolean;
   };
   competitiveLandscape: {
@@ -77,6 +78,7 @@ interface AppState {
   
   // Brand configuration
   brandConfig: BrandConfig;
+  updateBrandConfig: (config: BrandConfig) => void;
   updateBrandAccess: (data: Partial<BrandConfig['brandAccess']>) => void;
   approveBrandItem: (item: keyof BrandConfig) => void;
   updateBrandItem: (item: keyof BrandConfig, data: any) => void;
@@ -148,6 +150,7 @@ export const useAppStore = create<AppState>((set) => ({
     },
     salesGoals: {
       status: 'Ready',
+      description: 'Focus on driving a sustained increase in TRx volume in the 2L HER2+ metastatic breast cancer segment by expanding adoption among high-volume oncologists, capturing switches from T-DM1, and supporting persistence through PSP and copay programs',
       approved: false
     },
     competitiveLandscape: {
@@ -200,6 +203,7 @@ export const useAppStore = create<AppState>((set) => ({
       }
     }
   })),
+  updateBrandConfig: (config) => set({ brandConfig: config }),
   
   // Product configuration (new)
   productConfig: {

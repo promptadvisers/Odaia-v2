@@ -13,7 +13,6 @@ interface SetupTabProps {
 export const SetupTab: React.FC<SetupTabProps> = ({ onNavigateToReport }) => {
   const { productConfig, updateProductConfig, hasUploadedFiles } = useAppStore();
   const [showProductModal, setShowProductModal] = useState(false);
-  const [showCompetitiveModal, setShowCompetitiveModal] = useState(false);
   const [showMarketTreeModal, setShowMarketTreeModal] = useState(false);
 
   if (!hasUploadedFiles) {

@@ -268,11 +268,11 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                   <div style={{ position: 'relative' }}>
                     <textarea
                     value={editValues[item.title] || item.description}
-                    onChange={(e) => setEditValues({ ...editValues, [item.title]: e.target.value })}
+                    onChange={(e) => setEditValues(prev => ({ ...prev, [item.title]: e.target.value }))}
                     onKeyDown={(e) => {
                       // Cancel on ESC key
                       if (e.key === 'Escape') {
-                        setEditValues({ ...editValues, [item.title]: originalValues[item.title] });
+                        setEditValues(prev => ({ ...prev, [item.title]: originalValues[item.title] || '' }));
                         setEditingCard(null);
                       }
                     }}
@@ -287,12 +287,12 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                       if (item.title === 'Brand') {
                         updateBrandConfig({
                           ...brandConfig,
-                          brand: { ...brandConfig.brand, description: editValues[item.title] || item.description }
+                          brand: { ...brandConfig.brand, description: editValues[item.title] || item.description || '' }
                         });
                       } else if (item.title === 'Sales Goals') {
                         updateBrandConfig({
                           ...brandConfig,
-                          salesGoals: { ...brandConfig.salesGoals, description: editValues[item.title] || item.description }
+                          salesGoals: { ...brandConfig.salesGoals, description: editValues[item.title] || item.description || '' }
                         });
                       }
                       setEditingCard(null);
@@ -334,8 +334,8 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                     onClick={() => {
                       if (item.title === 'Brand' || item.title === 'Sales Goals') {
                         setEditingCard(item.title);
-                        setEditValues({ ...editValues, [item.title]: item.description });
-                        setOriginalValues({ ...originalValues, [item.title]: item.description });
+                        setEditValues(prev => ({ ...prev, [item.title]: item.description || '' }));
+                        setOriginalValues(prev => ({ ...prev, [item.title]: item.description || '' }));
                       }
                     }}
                   >{item.description}</p>
@@ -365,8 +365,8 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                       // For Brand and Sales Goals, trigger inline editing
                       if (item.title === 'Brand' || item.title === 'Sales Goals') {
                         setEditingCard(item.title);
-                        setEditValues({ ...editValues, [item.title]: item.description });
-                        setOriginalValues({ ...originalValues, [item.title]: item.description });
+                        setEditValues(prev => ({ ...prev, [item.title]: item.description || '' }));
+                        setOriginalValues(prev => ({ ...prev, [item.title]: item.description || '' }));
                         return;
                       }
                       

@@ -100,7 +100,7 @@ export const SimulationResults: React.FC<SimulationResultsProps> = ({ simulation
                   dataKey="Current" 
                   position="top" 
                   style={{ fill: '#ffffff', fontSize: '12px' }}
-                  formatter={(value: number) => value.toFixed(0)}
+                  formatter={(value) => typeof value === 'number' ? value.toFixed(0) : ''}
                 />
               </Bar>
               <Bar dataKey="Simulated" fill="#3b82f6" radius={[4, 4, 0, 0]}>
@@ -108,7 +108,7 @@ export const SimulationResults: React.FC<SimulationResultsProps> = ({ simulation
                   dataKey="Simulated" 
                   position="top" 
                   style={{ fill: '#ffffff', fontSize: '12px' }}
-                  formatter={(value: number) => value.toFixed(0)}
+                  formatter={(value) => typeof value === 'number' ? value.toFixed(0) : ''}
                 />
               </Bar>
             </BarChart>
