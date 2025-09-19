@@ -5,6 +5,7 @@ import { Button } from '../components/Button';
 import { FileUpload, FileList } from '../components/FileUpload';
 import { Plus, Edit2 } from 'lucide-react';
 import { useAppStore } from '../store/appStore';
+import { SetupTab } from './SetupTab';
 
 interface MainDashboardProps {
   onNavigate?: (screen: string) => void;
@@ -364,111 +365,8 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
             </div>
           )}
           
-          {activeTab === 'setup' && hasUploadedFiles && (
-            <>
-              <Card 
-                onClick={(e: React.MouseEvent) => {
-                  // Don't trigger if clicking on buttons
-                  if ((e.target as HTMLElement).tagName !== 'BUTTON') {
-                    setEditingCardType('hcp-targeting');
-                    setActiveModal('setup-detail');
-                  }
-                }}
-                style={{ cursor: 'pointer' }}
-              >
-                <CardHeader>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-                    <div>
-                      <CardTitle>Value Engine: HCP Targeting</CardTitle>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '4px' }}>
-                        <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>Established Product</span>
-                        <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>• 70/30 Value Weighting</span>
-                      </div>
-                    </div>
-                    <Badge variant="warning">Ready for Review</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '20px' }}>
-                    This defines how we value HCPs for scoring.
-                  </p>
-                  <div style={{ display: 'flex', gap: '12px' }}>
-                    <Button 
-                      variant="primary" 
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveModal('hcp-targeting');
-                      }}
-                    >
-                      Approve
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveModal('hcp-targeting');
-                      }}
-                    >
-                      View
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-              
-              <Card
-                onClick={(e: React.MouseEvent) => {
-                  // Don't trigger if clicking on buttons
-                  if ((e.target as HTMLElement).tagName !== 'BUTTON') {
-                    setEditingCardType('call-plan');
-                    setActiveModal('setup-detail');
-                  }
-                }}
-                style={{ cursor: 'pointer' }}
-              >
-                <CardHeader>
-                  <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between' }}>
-                    <div>
-                      <CardTitle>Curation Engine: Call Plan</CardTitle>
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginTop: '4px' }}>
-                        <span style={{ fontSize: '13px', color: 'var(--text-secondary)' }}>40 HCP/Week</span>
-                        <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>• 12 Signals</span>
-                        <span style={{ fontSize: '13px', color: 'var(--text-muted)' }}>• Reach & Frequency</span>
-                      </div>
-                    </div>
-                    <Badge variant="warning">Ready for Review</Badge>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <p style={{ fontSize: '13px', color: 'var(--text-secondary)', marginBottom: '20px' }}>
-                    Define what, how and how often you would like our suggestions delivered to your sales reps.
-                  </p>
-                  <div style={{ display: 'flex', gap: '12px' }}>
-                    <Button 
-                      variant="primary" 
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveModal('call-plan');
-                      }}
-                    >
-                      Approve
-                    </Button>
-                    <Button 
-                      variant="ghost" 
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setActiveModal('call-plan');
-                      }}
-                    >
-                      View
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </>
+          {activeTab === 'setup' && (
+            <SetupTab />
           )}
         </div>
       </div>

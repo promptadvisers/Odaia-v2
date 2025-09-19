@@ -49,6 +49,23 @@ interface BrandConfig {
   };
 }
 
+interface ProductConfiguration {
+  basketName: string;
+  basketWeight: string;
+  therapeuticArea: string;
+  product: string;
+  indication: string;
+  specialties: string;
+  metrics: Array<{
+    name: string;
+    weight: number;
+    visualize: boolean;
+  }>;
+  competitiveOpportunities: any[];
+  precursor: any[];
+  analog: any[];
+}
+
 interface AppState {
   // File management
   uploadedFiles: UploadedFile[];
@@ -63,6 +80,10 @@ interface AppState {
   updateBrandAccess: (data: Partial<BrandConfig['brandAccess']>) => void;
   approveBrandItem: (item: keyof BrandConfig) => void;
   updateBrandItem: (item: keyof BrandConfig, data: any) => void;
+  
+  // Product configuration (new)
+  productConfig: ProductConfiguration;
+  updateProductConfig: (data: Partial<ProductConfiguration>) => void;
   
   // UI State
   activeModal: string | null;
@@ -177,6 +198,30 @@ export const useAppStore = create<AppState>((set) => ({
         ...state.brandConfig[item],
         ...data
       }
+    }
+  })),
+  
+  // Product configuration (new)
+  productConfig: {
+    basketName: 'Odaiazol',
+    basketWeight: '7',
+    therapeuticArea: 'Oncology',
+    product: 'Odaiazol',
+    indication: '2L Therapy HER+',
+    specialties: '',
+    metrics: [
+      { name: 'XPO TRx Volume', weight: 100, visualize: true },
+      { name: 'XPO NRx Volume', weight: 0, visualize: false },
+      { name: 'XPO NBRx Volume', weight: 0, visualize: false }
+    ],
+    competitiveOpportunities: [],
+    precursor: [],
+    analog: []
+  },
+  updateProductConfig: (data) => set((state) => ({
+    productConfig: {
+      ...state.productConfig,
+      ...data
     }
   })),
   
