@@ -10,7 +10,7 @@ import { TeamScreen } from './screens/TeamScreen';
 import { DocumentsScreen } from './screens/DocumentsScreen';
 import { SettingsScreen } from './screens/SettingsScreen';
 import { ProfileScreen } from './screens/ProfileScreen';
-import { LiveAnalytics } from './screens/LiveAnalytics';
+import { ReportTab } from './screens/ReportTab';
 
 // Dialogs
 import { BrandAccessDialog } from './dialogs/BrandAccessDialog';
@@ -42,7 +42,7 @@ function App() {
   const tabs = [
     { id: 'brand', label: 'Brand' },
     { id: 'setup', label: 'Setup' },
-    { id: 'live', label: 'Live' }
+    { id: 'report', label: 'Report' }
   ];
 
   // Function to handle navigation from main dashboard
@@ -70,8 +70,8 @@ function App() {
       <div style={{ flex: 1, backgroundColor: 'var(--bg-main)', display: 'flex', flexDirection: 'column' }}>
         <Header tabs={tabs} activeTab={activeTab} onTabChange={setActiveTab} />
         <div style={{ flex: 1, overflow: 'auto' }}>
-          {activeTab === 'live' ? (
-            <LiveAnalytics />
+          {activeTab === 'report' ? (
+            <ReportTab />
           ) : (
             <MainDashboard onNavigate={handleNavigate} activeTab={activeTab} onEdit={setEditingItem} />
           )}
