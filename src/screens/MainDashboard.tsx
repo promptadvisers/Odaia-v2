@@ -12,10 +12,14 @@ interface MainDashboardProps {
   onNavigate?: (screen: string) => void;
   activeTab?: string;
   onEdit?: (item: string) => void;
+  onTabChange?: (tab: string) => void;
 }
 
-export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, activeTab = 'brand', onEdit }) => {
-  const { uploadedFiles, brandConfig, setActiveModal, isProcessingFile, hasUploadedFiles, setEditingCardType } = useAppStore();
+export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, activeTab = 'brand', onEdit, onTabChange }) => {
+  const { uploadedFiles, brandConfig, setActiveModal, isProcessingFile, hasUploadedFiles, setEditingCardType, updateBrandConfig } = useAppStore();
+  const [editingCard, setEditingCard] = React.useState<string | null>(null);
+  const [editValues, setEditValues] = React.useState<{ [key: string]: string }>({});
+  const [originalValues, setOriginalValues] = React.useState<{ [key: string]: string }>({});
 
   const brandItems = [
     {
@@ -259,14 +263,83 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                     ))}
                   </div>
                 )}
-                {item.description && (
-                  <p style={{ 
-                    fontSize: '13px',
-                    color: 'var(--text-secondary)',
-                    marginBottom: '20px',
-                    lineHeight: '1.6'
-                  }}>{item.description}</p>
-                )}
+                {/* Inline editing for Brand and Sales Goals */}
+                {(item.title === 'Brand' || item.title === 'Sales Goals') && editingCard === item.title ? (
+                  <div style={{ position: 'relative' }}>
+                    <textarea
+                    value={editValues[item.title] || item.description}
+                    onChange={(e) => setEditValues({ ...editValues, [item.title]: e.target.value })}
+                    onKeyDown={(e) => {
+                      // Cancel on ESC key
+                      if (e.key === 'Escape') {
+                        setEditValues({ ...editValues, [item.title]: originalValues[item.title] });
+                        setEditingCard(null);
+                      }
+                    }}
+                    onBlur={(e) => {
+                      // Don't save if we're clicking on another editable field
+                      const relatedTarget = e.relatedTarget as HTMLElement;
+                      if (relatedTarget && relatedTarget.tagName === 'TEXTAREA') {
+                        return;
+                      }
+                      
+                      // Save the changes
+                      if (item.title === 'Brand') {
+                        updateBrandConfig({
+                          ...brandConfig,
+                          brand: { ...brandConfig.brand, description: editValues[item.title] || item.description }
+                        });
+                      } else if (item.title === 'Sales Goals') {
+                        updateBrandConfig({
+                          ...brandConfig,
+                          salesGoals: { ...brandConfig.salesGoals, description: editValues[item.title] || item.description }
+                        });
+                      }
+                      setEditingCard(null);
+                    }}
+                    style={{
+                      width: '100%',
+                      minHeight: '80px',
+                      padding: '12px',
+                      fontSize: '13px',
+                      lineHeight: '1.6',
+                      color: 'var(--text-primary)',
+                      backgroundColor: 'var(--bg-input)',
+                      border: '1px solid var(--border-primary)',
+                      borderRadius: '4px',
+                      resize: 'vertical',
+                      marginBottom: '20px',
+                      fontFamily: 'inherit',
+                      outline: 'none'
+                    }}
+                    autoFocus
+                  />
+                    <div style={{ 
+                      fontSize: '11px', 
+                      color: 'var(--text-muted)', 
+                      marginTop: '4px' 
+                    }}>
+                      Press ESC to cancel • Click outside to save
+                    </div>
+                  </div>
+                ) : item.description ? (
+                  <p 
+                    style={{ 
+                      fontSize: '13px',
+                      color: 'var(--text-secondary)',
+                      marginBottom: '20px',
+                      lineHeight: '1.6',
+                      cursor: (item.title === 'Brand' || item.title === 'Sales Goals') ? 'text' : 'default'
+                    }}
+                    onClick={() => {
+                      if (item.title === 'Brand' || item.title === 'Sales Goals') {
+                        setEditingCard(item.title);
+                        setEditValues({ ...editValues, [item.title]: item.description });
+                        setOriginalValues({ ...originalValues, [item.title]: item.description });
+                      }
+                    }}
+                  >{item.description}</p>
+                ) : null}
                 <div style={{ display: 'flex', gap: '12px' }}>
                   <Button 
                     variant="primary" 
@@ -289,6 +362,14 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                     variant="ghost" 
                     size="sm"
                     onClick={() => {
+                      // For Brand and Sales Goals, trigger inline editing
+                      if (item.title === 'Brand' || item.title === 'Sales Goals') {
+                        setEditingCard(item.title);
+                        setEditValues({ ...editValues, [item.title]: item.description });
+                        setOriginalValues({ ...originalValues, [item.title]: item.description });
+                        return;
+                      }
+                      
                       const itemKey = item.title === 'Brand' ? 'brand' : 
                                      item.title === 'Brand Access Strategy' ? 'brandAccess' :
                                      item.title === 'Sales Goals' ? 'salesGoals' :
@@ -301,7 +382,7 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
                       }
                       // Otherwise route specific cards to the ProjectObjectiveDialog
                       else if (itemKey === 'medicalObjectives' || itemKey === 'brandAccess' || 
-                          itemKey === 'salesGoals' || itemKey === 'competitiveLandscape') {
+                          itemKey === 'competitiveLandscape') {
                         setEditingCardType(itemKey);
                         setActiveModal('project-objective');
                       } else if (itemKey && onEdit) {
@@ -343,7 +424,7 @@ export const MainDashboard: React.FC<MainDashboardProps> = ({ onNavigate, active
           )}
           
           {activeTab === 'setup' && (
-            <SetupTab />
+            <SetupTab onNavigateToReport={() => onTabChange && onTabChange('report')} />
           )}
         </div>
       </div>

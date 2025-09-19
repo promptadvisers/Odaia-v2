@@ -24,8 +24,8 @@ export const ProductTreeModal: React.FC<ProductTreeModalProps> = ({
   const [basketName, setBasketName] = useState('Odaiazol');
   const [basketWeight, setBasketWeight] = useState('7');
   const [therapeuticArea, setTherapeuticArea] = useState('Oncology');
-  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['portfolio', 'basket', 'metrics']));
-  const [showProductTree, setShowProductTree] = useState(false);
+  const [expandedSections, setExpandedSections] = useState<Set<string>>(new Set(['portfolio']));
+  const [showProductDropdown, setShowProductDropdown] = useState(false);
   const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set(['tumor-agnostic']));
   const [checkedNodes, setCheckedNodes] = useState<Set<string>>(new Set(['odaiazol', 'tumor-agnostic']));
   const [metrics, setMetrics] = useState([
@@ -33,6 +33,30 @@ export const ProductTreeModal: React.FC<ProductTreeModalProps> = ({
     { name: 'XPO NRx Volume', weight: 0, visualize: false },
     { name: 'XPO NBRx Volume', weight: 0, visualize: false }
   ]);
+
+  // Pharmaceutical-specific competitive data
+  const competitiveProducts = [
+    'Enhertu (trastuzumab deruxtecan)',
+    'Kadcyla (ado-trastuzumab emtansine)',
+    'Tykerb (lapatinib)',
+    'Herceptin (trastuzumab)',
+    'Perjeta (pertuzumab)'
+  ];
+
+  const precursorProducts = [
+    'T-DM1 (ado-trastuzumab emtansine)',
+    'Pertuzumab + Trastuzumab',
+    'Trastuzumab monotherapy',
+    'Lapatinib + Capecitabine'
+  ];
+
+  const analogProducts = [
+    'Trastuzumab biosimilars',
+    'Lapatinib',
+    'Neratinib',
+    'Tucatinib',
+    'Margetuximab'
+  ];
 
   const productTree: TreeNode[] = [
     {
@@ -134,7 +158,7 @@ export const ProductTreeModal: React.FC<ProductTreeModalProps> = ({
           >
             <span style={{
               color: '#ffffff',
-              fontSize: '14px',
+              fontSize: '13px',
               userSelect: 'none'
             }}>
               {node.label}
@@ -176,94 +200,6 @@ export const ProductTreeModal: React.FC<ProductTreeModalProps> = ({
     onSave(data);
     onClose();
   };
-
-  if (showProductTree) {
-    return (
-      <div style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        right: 0,
-        bottom: 0,
-        backgroundColor: 'rgba(0, 0, 0, 0.5)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        zIndex: 1000
-      }}>
-        <div style={{
-          backgroundColor: '#1a1f2e',
-          borderRadius: '12px',
-          width: '90%',
-          maxWidth: '600px',
-          maxHeight: '80vh',
-          overflow: 'auto',
-          position: 'relative'
-        }}>
-          {/* Header */}
-          <div style={{
-            padding: '20px 24px',
-            backgroundColor: '#1a2332',
-            borderBottom: '1px solid #2a3441',
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-          }}>
-            <h2 style={{
-              fontSize: '16px',
-              fontWeight: '500',
-              color: '#ffffff',
-              margin: 0
-            }}>
-              Select Product from Tree
-            </h2>
-            <button
-              onClick={() => setShowProductTree(false)}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: '#64748b',
-                cursor: 'pointer',
-                padding: '4px'
-              }}
-            >
-              <X size={20} />
-            </button>
-          </div>
-
-          {/* Tree Content */}
-          <div style={{ padding: '12px 0' }}>
-            {productTree.map(node => renderTreeNode(node))}
-          </div>
-
-          {/* Footer */}
-          <div style={{
-            padding: '16px 24px',
-            borderTop: '1px solid #2a3441',
-            display: 'flex',
-            justifyContent: 'flex-end',
-            gap: '12px'
-          }}>
-            <button
-              onClick={() => setShowProductTree(false)}
-              style={{
-                padding: '8px 20px',
-                backgroundColor: '#3b82f6',
-                border: 'none',
-                borderRadius: '6px',
-                color: '#ffffff',
-                fontSize: '14px',
-                fontWeight: '500',
-                cursor: 'pointer'
-              }}
-            >
-              Select
-            </button>
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <div style={{
@@ -443,7 +379,7 @@ export const ProductTreeModal: React.FC<ProductTreeModalProps> = ({
               </select>
             </div>
 
-            {/* Product Tree Section */}
+            {/* Product Dropdown with Inline Tree */}
             <div style={{ marginBottom: '12px' }}>
               <label style={{
                 display: 'block',
@@ -454,7 +390,7 @@ export const ProductTreeModal: React.FC<ProductTreeModalProps> = ({
                 Product
               </label>
               <div
-                onClick={() => setShowProductTree(true)}
+                onClick={() => setShowProductDropdown(!showProductDropdown)}
                 style={{
                   padding: '8px 12px',
                   backgroundColor: '#1a1f2e',
@@ -469,22 +405,27 @@ export const ProductTreeModal: React.FC<ProductTreeModalProps> = ({
                 }}
               >
                 <span>Odaiazol</span>
-                <ChevronDown size={16} style={{ color: '#64748b' }} />
+                <ChevronDown size={16} style={{ 
+                  color: '#64748b',
+                  transform: showProductDropdown ? 'rotate(180deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.2s'
+                }} />
               </div>
-            </div>
 
-            {/* Product Tree Preview (when product selected) */}
-            {checkedNodes.size > 0 && (
-              <div style={{
-                backgroundColor: '#1a2332',
-                borderRadius: '4px',
-                border: '1px solid #2a3441',
-                padding: '8px',
-                marginBottom: '12px'
-              }}>
-                {productTree.map(node => renderTreeNode(node))}
-              </div>
-            )}
+              {/* Product Tree - Shows inline when dropdown is open */}
+              {showProductDropdown && (
+                <div style={{
+                  backgroundColor: '#1a2332',
+                  borderRadius: '0 0 4px 4px',
+                  border: '1px solid #2a3441',
+                  borderTop: 'none',
+                  marginTop: '-1px',
+                  padding: '8px 0'
+                }}>
+                  {productTree.map(node => renderTreeNode(node))}
+                </div>
+              )}
+            </div>
 
             {/* Indications Dropdown */}
             <div style={{ marginBottom: '12px' }}>
@@ -535,6 +476,9 @@ export const ProductTreeModal: React.FC<ProductTreeModalProps> = ({
                 }}
               >
                 <option value="">Select Specialties (Optional)</option>
+                <option value="medical-oncology">Medical Oncology</option>
+                <option value="hematology-oncology">Hematology-Oncology</option>
+                <option value="surgical-oncology">Surgical Oncology</option>
               </select>
             </div>
           </div>
@@ -542,7 +486,7 @@ export const ProductTreeModal: React.FC<ProductTreeModalProps> = ({
           {/* Metrics Section */}
           <MetricsTable metrics={metrics} setMetrics={setMetrics} />
 
-          {/* Collapsible Basket Sections */}
+          {/* Collapsible Basket Sections with Pharma Data */}
           <div style={{ marginTop: '24px' }}>
             {/* Competitive Opportunities */}
             <div style={{ marginBottom: '12px' }}>
@@ -572,7 +516,19 @@ export const ProductTreeModal: React.FC<ProductTreeModalProps> = ({
                   borderRadius: '0 0 4px 4px',
                   marginTop: '-1px'
                 }}>
-                  <p style={{ fontSize: '12px', color: '#64748b' }}>No items configured for this basket</p>
+                  {competitiveProducts.map((product, index) => (
+                    <div key={index} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '8px 0'
+                    }}>
+                      <input 
+                        type="checkbox" 
+                        style={{ marginRight: '10px', accentColor: '#3b82f6' }}
+                      />
+                      <span style={{ fontSize: '12px', color: '#ffffff' }}>{product}</span>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
@@ -605,7 +561,19 @@ export const ProductTreeModal: React.FC<ProductTreeModalProps> = ({
                   borderRadius: '0 0 4px 4px',
                   marginTop: '-1px'
                 }}>
-                  <p style={{ fontSize: '12px', color: '#64748b' }}>No items configured for this basket</p>
+                  {precursorProducts.map((product, index) => (
+                    <div key={index} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '8px 0'
+                    }}>
+                      <input 
+                        type="checkbox" 
+                        style={{ marginRight: '10px', accentColor: '#3b82f6' }}
+                      />
+                      <span style={{ fontSize: '12px', color: '#ffffff' }}>{product}</span>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
@@ -638,7 +606,19 @@ export const ProductTreeModal: React.FC<ProductTreeModalProps> = ({
                   borderRadius: '0 0 4px 4px',
                   marginTop: '-1px'
                 }}>
-                  <p style={{ fontSize: '12px', color: '#64748b' }}>No items configured for this basket</p>
+                  {analogProducts.map((product, index) => (
+                    <div key={index} style={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      padding: '8px 0'
+                    }}>
+                      <input 
+                        type="checkbox" 
+                        style={{ marginRight: '10px', accentColor: '#3b82f6' }}
+                      />
+                      <span style={{ fontSize: '12px', color: '#ffffff' }}>{product}</span>
+                    </div>
+                  ))}
                 </div>
               )}
             </div>
@@ -672,10 +652,10 @@ export const ProductTreeModal: React.FC<ProductTreeModalProps> = ({
             onClick={handleSave}
             style={{
               padding: '8px 20px',
-              backgroundColor: '#3b82f6',
-              border: 'none',
+              backgroundColor: 'transparent',
+              border: '1px solid #2a3441',
               borderRadius: '4px',
-              color: '#ffffff',
+              color: '#94a3b8',
               fontSize: '13px',
               fontWeight: '500',
               cursor: 'pointer'

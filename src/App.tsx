@@ -38,6 +38,16 @@ function App() {
     const savedTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
   }, []);
+  
+  // Handle navigation to Report tab from chat
+  useEffect(() => {
+    const handleNavigateToReport = () => {
+      setActiveTab('report');
+    };
+    
+    window.addEventListener('navigateToReport', handleNavigateToReport);
+    return () => window.removeEventListener('navigateToReport', handleNavigateToReport);
+  }, []);
 
   const tabs = [
     { id: 'brand', label: 'Brand' },
@@ -73,7 +83,7 @@ function App() {
           {activeTab === 'report' ? (
             <ReportTab />
           ) : (
-            <MainDashboard onNavigate={handleNavigate} activeTab={activeTab} onEdit={setEditingItem} />
+            <MainDashboard onNavigate={handleNavigate} activeTab={activeTab} onEdit={setEditingItem} onTabChange={setActiveTab} />
           )}
         </div>
       </div>
@@ -85,7 +95,8 @@ function App() {
       <div style={{ display: 'flex', height: '100vh', backgroundColor: 'var(--bg-main)' }}>
         <Sidebar 
           activeSection={activeSidebarItem} 
-          onSectionChange={setActiveSidebarItem} 
+          onSectionChange={setActiveSidebarItem}
+          onLogoClick={() => setActiveTab('brand')} 
         />
         
         {renderContent()}

@@ -5,9 +5,10 @@ import odaiaLogo from '../assets/odaia.png';
 interface SidebarProps {
   activeSection?: string;
   onSectionChange?: (section: string) => void;
+  onLogoClick?: () => void;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange }) => {
+export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange, onLogoClick }) => {
   const menuItems = [
     { icon: Users, label: 'Team', id: 'team' },
     { icon: FileText, label: 'Documents', id: 'documents' },
@@ -18,6 +19,8 @@ export const Sidebar: React.FC<SidebarProps> = ({ activeSection, onSectionChange
   const handleMainDashboardClick = () => {
     // Clear the active section to go back to main dashboard
     onSectionChange?.('');
+    // Call the logo click handler if provided
+    onLogoClick?.();
   };
 
   return (

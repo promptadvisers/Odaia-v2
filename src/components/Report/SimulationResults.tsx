@@ -1,14 +1,15 @@
 import React from 'react';
 import { Badge } from '../Badge';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, LabelList } from 'recharts';
 import type { Simulation } from './SimulationRunner';
 
 interface SimulationResultsProps {
   simulation: Simulation;
   onReview?: () => void;
+  onEdit?: () => void;
 }
 
-export const SimulationResults: React.FC<SimulationResultsProps> = ({ simulation, onReview }) => {
+export const SimulationResults: React.FC<SimulationResultsProps> = ({ simulation, onReview, onEdit }) => {
   // Transform data for grouped bar chart (matching screenshot)
   const chartData = simulation.results?.powerScoreData.map((segment) => ({
     name: segment.segment,
@@ -94,8 +95,22 @@ export const SimulationResults: React.FC<SimulationResultsProps> = ({ simulation
                   fontSize: '12px'
                 }}
               />
-              <Bar dataKey="Current" fill="#5a7fb8" radius={[4, 4, 0, 0]} />
-              <Bar dataKey="Simulated" fill="#3b82f6" radius={[4, 4, 0, 0]} />
+              <Bar dataKey="Current" fill="#5a7fb8" radius={[4, 4, 0, 0]}>
+                <LabelList 
+                  dataKey="Current" 
+                  position="top" 
+                  style={{ fill: '#ffffff', fontSize: '12px' }}
+                  formatter={(value: number) => value.toFixed(0)}
+                />
+              </Bar>
+              <Bar dataKey="Simulated" fill="#3b82f6" radius={[4, 4, 0, 0]}>
+                <LabelList 
+                  dataKey="Simulated" 
+                  position="top" 
+                  style={{ fill: '#ffffff', fontSize: '12px' }}
+                  formatter={(value: number) => value.toFixed(0)}
+                />
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -199,29 +214,56 @@ export const SimulationResults: React.FC<SimulationResultsProps> = ({ simulation
         </div>
       )}
 
-      {/* Review Button */}
-      <button
-        onClick={onReview}
-        style={{
-          padding: '8px 16px',
-          backgroundColor: '#3b82f6',
-          border: 'none',
-          borderRadius: '6px',
-          color: '#ffffff',
-          fontSize: '14px',
-          fontWeight: '500',
-          cursor: 'pointer',
-          transition: 'background-color 0.2s'
-        }}
-        onMouseEnter={(e) => {
-          e.currentTarget.style.backgroundColor = '#2563eb';
-        }}
-        onMouseLeave={(e) => {
-          e.currentTarget.style.backgroundColor = '#3b82f6';
-        }}
-      >
-        Review
-      </button>
+      {/* Action Buttons */}
+      <div style={{ display: 'flex', gap: '12px' }}>
+        <button
+          onClick={onReview}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: '#3b82f6',
+            border: 'none',
+            borderRadius: '6px',
+            color: '#ffffff',
+            fontSize: '14px',
+            fontWeight: '500',
+            cursor: 'pointer',
+            transition: 'background-color 0.2s'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#2563eb';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#3b82f6';
+          }}
+        >
+          Review
+        </button>
+        
+        <button
+          onClick={onEdit}
+          style={{
+            padding: '8px 16px',
+            backgroundColor: 'transparent',
+            border: '1px solid #3b82f6',
+            borderRadius: '6px',
+            color: '#3b82f6',
+            fontSize: '14px',
+            fontWeight: '500',
+            cursor: 'pointer',
+            transition: 'all 0.2s'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#3b82f6';
+            e.currentTarget.style.color = '#ffffff';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'transparent';
+            e.currentTarget.style.color = '#3b82f6';
+          }}
+        >
+          Edit
+        </button>
+      </div>
     </div>
   );
 };

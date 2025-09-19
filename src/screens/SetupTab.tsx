@@ -4,11 +4,17 @@ import { Badge } from '../components/Badge';
 import { Button } from '../components/Button';
 import { useAppStore } from '../store/appStore';
 import { ProductTreeModal } from '../components/Setup/ProductTreeModal';
+import { TotalMarketTreeModal } from '../components/Setup/TotalMarketTreeModal';
 
-export const SetupTab: React.FC = () => {
+interface SetupTabProps {
+  onNavigateToReport?: () => void;
+}
+
+export const SetupTab: React.FC<SetupTabProps> = ({ onNavigateToReport }) => {
   const { productConfig, updateProductConfig, hasUploadedFiles } = useAppStore();
   const [showProductModal, setShowProductModal] = useState(false);
   const [showCompetitiveModal, setShowCompetitiveModal] = useState(false);
+  const [showMarketTreeModal, setShowMarketTreeModal] = useState(false);
 
   if (!hasUploadedFiles) {
     return (
@@ -110,8 +116,9 @@ export const SetupTab: React.FC = () => {
                 variant="ghost" 
                 size="sm"
                 onClick={() => {
-                  // Navigate to simulation
-                  console.log('Run simulation clicked');
+                  if (onNavigateToReport) {
+                    onNavigateToReport();
+                  }
                 }}
               >
                 Run a Simulation
@@ -179,16 +186,14 @@ export const SetupTab: React.FC = () => {
               <Button 
                 variant="primary" 
                 size="sm"
-                onClick={() => setShowCompetitiveModal(true)}
+                onClick={() => setShowMarketTreeModal(true)}
               >
                 Configure Market
               </Button>
               <Button 
                 variant="ghost" 
                 size="sm"
-                onClick={() => {
-                  console.log('View tree clicked');
-                }}
+                onClick={() => setShowMarketTreeModal(true)}
               >
                 View Market Tree
               </Button>
@@ -204,6 +209,11 @@ export const SetupTab: React.FC = () => {
           updateProductConfig(data);
           setShowProductModal(false);
         }}
+      />
+      
+      <TotalMarketTreeModal
+        isOpen={showMarketTreeModal}
+        onClose={() => setShowMarketTreeModal(false)}
       />
     </>
   );
